@@ -8,14 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selectedTab: Tab = .movieclapper
+    
+    init() {
+        UITabBar.appearance().isHidden = true
+    }
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            ZStack {
+                switch selectedTab {
+                case .movieclapper:
+                    MovieListView()
+                case .menucard:
+                    SearchMovieView()
+                case .heart:
+                    WatchListView()
+                case .person:
+                    ProfileView()
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            CustomTabBar(selectedTab: $selectedTab)
         }
-        .padding()
     }
 }
 
