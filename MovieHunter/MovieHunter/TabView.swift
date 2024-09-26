@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct TabView: View {
     @State private var selectedTab: Tab = .movieclapper
     
     init() {
@@ -35,5 +35,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    TabView()
 }
