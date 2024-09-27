@@ -22,8 +22,7 @@ struct MovieCardView: View {
                     Image(uiImage: self.imageLoader.image!)
                         .resizable()
                 } else {
-                    Text("Loading...") // Placeholder text while image is loading
-                        .foregroundColor(.white)
+                    LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0){}
                 }
             }
             .aspectRatio(16/9, contentMode: .fit)

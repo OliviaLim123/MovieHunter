@@ -25,8 +25,7 @@ struct MoviePosterCardView: View {
                     .cornerRadius(8)
                     .shadow(radius: 4)
                 VStack {
-                    Text(movie.title)
-                        .multilineTextAlignment(.center)
+                    LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {}
                 }
             }
         }
