@@ -15,8 +15,8 @@ struct TabView: View {
     }
     
     var body: some View {
-        VStack {
-            ZStack {
+        ZStack {
+            VStack {
                 switch selectedTab {
                 case .movieclapper:
                     MovieListView()
@@ -29,7 +29,11 @@ struct TabView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            CustomTabBar(selectedTab: $selectedTab)
+            .ignoresSafeArea(.all, edges: .bottom)
+            VStack {
+                Spacer()
+                CustomTabBar(selectedTab: $selectedTab)
+            }
         }
     }
 }

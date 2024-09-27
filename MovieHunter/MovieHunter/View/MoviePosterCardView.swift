@@ -25,14 +25,8 @@ struct MoviePosterCardView: View {
                     .cornerRadius(8)
                     .shadow(radius: 4)
                 VStack {
-                    Image(systemName: "photo")
-                        .resizable()
-                        .frame(width: 100, height: 80)
-                        .foregroundStyle(.white)
-                        .padding()
                     Text(movie.title)
                         .multilineTextAlignment(.center)
-                        .fontWeight(.bold)
                 }
             }
         }
