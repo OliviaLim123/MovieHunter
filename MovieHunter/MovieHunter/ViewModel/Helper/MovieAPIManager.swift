@@ -8,9 +8,9 @@
 import Foundation
 //API KEY: 0d9467472a2bed765450187cee11d8ff
 
-class MovieManager: MovieService {
+class MovieAPIManager: MovieService {
     
-    static let shared = MovieManager()
+    static let shared = MovieAPIManager()
     private init() {}
     
     private let apiKey = "0d9467472a2bed765450187cee11d8ff"

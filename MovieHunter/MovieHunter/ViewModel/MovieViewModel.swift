@@ -14,7 +14,7 @@ class MovieViewModel: ObservableObject {
     
     private let movieService: MovieService
     
-    init(movieService: MovieService = MovieManager.shared) {
+    init(movieService: MovieService = MovieAPIManager.shared) {
         self .movieService = movieService
     }
     
