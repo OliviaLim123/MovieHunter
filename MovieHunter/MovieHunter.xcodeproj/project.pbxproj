@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB3879E52CA77F5500212503 /* ActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = CB3879E42CA77F5500212503 /* ActivityIndicatorView */; };
 		CB64D78C2CA6B73F002CFB30 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = CB64D78B2CA6B73F002CFB30 /* Lottie */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB3879E52CA77F5500212503 /* ActivityIndicatorView in Frameworks */,
 				CB64D78C2CA6B73F002CFB30 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +73,7 @@
 			name = MovieHunter;
 			packageProductDependencies = (
 				CB64D78B2CA6B73F002CFB30 /* Lottie */,
+				CB3879E42CA77F5500212503 /* ActivityIndicatorView */,
 			);
 			productName = MovieHunter;
 			productReference = CB7A79C12CA1772C00C130A6 /* MovieHunter.app */;
@@ -102,6 +105,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				CB64D78A2CA6B73F002CFB30 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				CB3879E32CA77F5500212503 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CB7A79C22CA1772C00C130A6 /* Products */;
@@ -333,6 +337,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CB3879E32CA77F5500212503 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JoshHrach/ActivityIndicatorView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		CB64D78A2CA6B73F002CFB30 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios";
@@ -344,6 +356,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CB3879E42CA77F5500212503 /* ActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB3879E32CA77F5500212503 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */;
+			productName = ActivityIndicatorView;
+		};
 		CB64D78B2CA6B73F002CFB30 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CB64D78A2CA6B73F002CFB30 /* XCRemoteSwiftPackageReference "lottie-ios" */;
