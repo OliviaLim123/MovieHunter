@@ -21,8 +21,11 @@ struct MovieHorizontalView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 16) {
                     ForEach(self.movies) { movie in
-                        MovieCardView(movie: movie)
-                            .frame(width: 272, height: 200)
+                        NavigationLink(destination: MovieDetailView(movieId: movie.id)) {
+                            MovieCardView(movie: movie)
+                                .frame(width: 272, height: 200)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
                 .padding(.horizontal)

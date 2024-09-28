@@ -51,10 +51,11 @@ struct CustomTabBar: View {
             }
             .frame(width: nil, height: 60)
             .background(.thinMaterial)
+//            .background(Color.white.opacity(0.5))
             .cornerRadius(25)
             .padding()
         }
-        .background(Color.clear)
+//        .background(Color.clear)
     }
 }
 

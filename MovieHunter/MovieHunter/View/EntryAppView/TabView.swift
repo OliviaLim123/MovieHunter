@@ -29,7 +29,8 @@ struct TabView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .ignoresSafeArea(.all, edges: .bottom)
+            .padding(.bottom, 100)
+//            .ignoresSafeArea(.all, edges: .bottom)
             VStack {
                 Spacer()
                 CustomTabBar(selectedTab: $selectedTab)

@@ -24,7 +24,6 @@ struct MovieDetailListView: View {
                     Spacer()
                     Image(systemName: isFavorite ? "heart.fill" : "heart")
                         .font(.system(size: 30))
-                    Spacer()
                 }
                 MovieDetailImage (imageURL: movie.backdropURL)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -139,6 +138,7 @@ struct MovieDetailListView: View {
                             .padding(.horizontal)
                         }
                     }
+                    Spacer()
                 } else {
                     Text("Trailers video is not available")
                 }
