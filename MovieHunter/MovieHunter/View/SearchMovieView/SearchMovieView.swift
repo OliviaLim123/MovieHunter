@@ -11,40 +11,40 @@ struct SearchMovieView: View {
     @ObservedObject var movieSearchVM = MovieSearchViewModel()
     
     var body: some View {
-        NavigationView {
-           ScrollView {
-                SearchBarView(placeholder: "Search movies", text: self.$movieSearchVM.query)
-                    .padding(.horizontal, 10)
-                
-                LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
-                    Task {
-                        await self.movieSearchVM.search(query: self.movieSearchVM.query)
-                    }
+        ScrollView {
+            SearchBarView(placeholder: "Search movies", text: self.$movieSearchVM.query)
+                .padding(.horizontal, 10)
+            
+            LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
+                Task {
+                    await self.movieSearchVM.search(query: self.movieSearchVM.query)
                 }
-                
-                if self.movieSearchVM.movies != nil {
-                    if let movies = self.movieSearchVM.movies {
-                        ForEach(movies) { movie in
-                            NavigationLink(destination: MovieDetailView(movieId: movie.id)) {
-                                VStack(alignment: .leading) {
-                                    Text(movie.title)
-                                    Text(movie.yearText)
-                                }
+            }
+            
+            if self.movieSearchVM.movies != nil {
+                if let movies = self.movieSearchVM.movies {
+                    ForEach(movies) { movie in
+                        NavigationLink(destination: MovieDetailView(movieId: movie.id)) {
+                            VStack(alignment: .leading) {
+                                Text(movie.title)
+                                Text(movie.yearText)
                             }
                         }
-                    } else {
-                        Text("No movies are found.")
                     }
+                } else {
+                    Text("No movies are found.")
                 }
             }
-            .onAppear {
-                self.movieSearchVM.startObserve()
-            }
-            .navigationBarTitle("Search Movies")
         }
+        .onAppear {
+            self.movieSearchVM.startObserve()
+        }
+        .navigationBarTitle("Search Movies")
     }
 }
 
 #Preview {
-    SearchMovieView()
+    NavigationView {
+        SearchMovieView()
+    }
 }
