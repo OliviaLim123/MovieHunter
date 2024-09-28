@@ -18,7 +18,7 @@ struct MovieListView: View {
             ScrollView {
                 LazyVStack {
                     if nowPlaying.movies != nil {
-                        MoviePosterListView(title: "Now Playing", movies: nowPlaying.movies!)
+                        MovieThumbnailCarouselView(title: "Now Playing", movies: nowPlaying.movies!, thumbnailType: .poster())
                     } else {
                         LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
                             self.nowPlaying.loadMovies(with: .nowPlaying)
@@ -28,7 +28,7 @@ struct MovieListView: View {
                 .listRowInsets(EdgeInsets(top: 16, leading: 0, bottom: 8, trailing: 0))
                 LazyVStack {
                     if upcoming.movies != nil {
-                        MovieHorizontalView(title: "Upcoming", movies: upcoming.movies!)
+                        MovieThumbnailCarouselView(title: "Upcoming", movies: upcoming.movies!, thumbnailType: .backdrop)
                     } else {
                         LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
                             self.nowPlaying.loadMovies(with: .upcoming)
@@ -39,7 +39,7 @@ struct MovieListView: View {
                 
                 LazyVStack {
                     if topRated.movies != nil {
-                        MovieHorizontalView(title: "Top Rated", movies: topRated.movies!)
+                        MovieThumbnailCarouselView(title: "Top Rated", movies: topRated.movies!, thumbnailType: .backdrop)
                     } else {
                         LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
                             self.topRated.loadMovies(with: .topRated)
@@ -50,7 +50,7 @@ struct MovieListView: View {
                 
                 LazyVStack {
                     if popular.movies != nil {
-                        MovieHorizontalView(title: "Popular", movies: popular.movies!)
+                        MovieThumbnailCarouselView(title: "Popular", movies: popular.movies!, thumbnailType: .backdrop)
                     } else {
                         LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
                             self.popular.loadMovies(with: .popular)
@@ -59,7 +59,7 @@ struct MovieListView: View {
                 }
                 .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 16, trailing: 0))
             }
-            .navigationBarTitle("Movie Hunter List")
+            .navigationTitle("Movie Hunter List")
         }
         .onAppear {
             self.nowPlaying.loadMovies(with: .nowPlaying)
