@@ -18,19 +18,17 @@ class MovieViewModel: ObservableObject {
         self .movieService = movieService
     }
     
-    func loadMovies(with endpoint: MovieListEndPoint) {
+    func loadMovies(with endpoint: MovieListEndPoint) async {
         self.movies = nil
         self.isLoading = false
-        self.movieService.fetchMovies(from: endpoint) { [weak self] (result) in
-            guard let self = self else { return }
+        
+        do {
+            let movies = try await self.movieService.fetchMovies(from: endpoint)
             self.isLoading = false
-            
-            switch result {
-            case .success(let response):
-                self.movies = response.results
-            case .failure(let error):
-                self.error = error as NSError
-            }
+            self.movies = movies
+        } catch {
+            self.isLoading = false
+            self.error = error as NSError
         }
     }
 }

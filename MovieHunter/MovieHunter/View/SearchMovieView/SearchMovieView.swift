@@ -17,7 +17,9 @@ struct SearchMovieView: View {
                     .padding(.horizontal, 10)
                 
                 LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
-                    self.movieSearchVM.search(query: self.movieSearchVM.query)
+                    Task {
+                        await self.movieSearchVM.search(query: self.movieSearchVM.query)
+                    }
                 }
                 
                 if self.movieSearchVM.movies != nil {

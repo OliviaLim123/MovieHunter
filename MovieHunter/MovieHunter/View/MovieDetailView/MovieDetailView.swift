@@ -18,12 +18,16 @@ struct MovieDetailView: View {
                 MovieDetailListView(movie: self.movieDetailVM.movie!)
             } else {
                 LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
-                    self.movieDetailVM.loadMovie(id: self.movieId)
+                    Task {
+                        await self.movieDetailVM.loadMovie(id: self.movieId)
+                    }
                 }
             }
         }
         .onAppear {
-            self.movieDetailVM.loadMovie(id: self.movieId)
+            Task {
+                await  self.movieDetailVM.loadMovie(id: self.movieId)
+            }
         }
     }
 }

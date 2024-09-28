@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct MovieListView: View {
     
     @ObservedObject private var nowPlaying = MovieViewModel()
@@ -21,7 +22,9 @@ struct MovieListView: View {
                         MovieThumbnailCarouselView(title: "Now Playing", movies: nowPlaying.movies!, thumbnailType: .poster())
                     } else {
                         LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
-                            self.nowPlaying.loadMovies(with: .nowPlaying)
+                            Task {
+                                await self.nowPlaying.loadMovies(with: .nowPlaying)
+                            }
                         }
                     }
                 }
@@ -31,7 +34,9 @@ struct MovieListView: View {
                         MovieThumbnailCarouselView(title: "Upcoming", movies: upcoming.movies!, thumbnailType: .backdrop)
                     } else {
                         LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
-                            self.nowPlaying.loadMovies(with: .upcoming)
+                            Task {
+                                await self.nowPlaying.loadMovies(with: .upcoming)
+                            }
                         }
                     }
                 }
@@ -42,7 +47,9 @@ struct MovieListView: View {
                         MovieThumbnailCarouselView(title: "Top Rated", movies: topRated.movies!, thumbnailType: .backdrop)
                     } else {
                         LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
-                            self.topRated.loadMovies(with: .topRated)
+                            Task {
+                               await self.topRated.loadMovies(with: .topRated)
+                            }
                         }
                     }
                 }
@@ -53,7 +60,9 @@ struct MovieListView: View {
                         MovieThumbnailCarouselView(title: "Popular", movies: popular.movies!, thumbnailType: .backdrop)
                     } else {
                         LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
-                            self.popular.loadMovies(with: .popular)
+                            Task {
+                                await self.popular.loadMovies(with: .popular)
+                            }
                         }
                     }
                 }
@@ -62,10 +71,12 @@ struct MovieListView: View {
             .navigationTitle("Movie Hunter List")
         }
         .onAppear {
-            self.nowPlaying.loadMovies(with: .nowPlaying)
-            self.upcoming.loadMovies(with: .upcoming)
-            self.topRated.loadMovies(with: .topRated)
-            self.popular.loadMovies(with: .popular)
+            Task {
+                await self.nowPlaying.loadMovies(with: .nowPlaying)
+                await self.upcoming.loadMovies(with: .upcoming)
+                await self.topRated.loadMovies(with: .topRated)
+                await self.popular.loadMovies(with: .popular)
+            }
         }
     }
 }

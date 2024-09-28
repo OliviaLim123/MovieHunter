@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 class MovieDetailViewModel: ObservableObject {
     private let movieService: MovieService
     @Published var movie: Movie?
@@ -17,19 +18,16 @@ class MovieDetailViewModel: ObservableObject {
         self.movieService = movieService
     }
     
-    func loadMovie(id: Int) {
+    func loadMovie(id: Int) async {
         self.movie = nil
-        self.isLoading = false
-        self.movieService.fetchMovie(id: id) { [weak self] (result) in
-            guard let self = self else { return }
-            
+        self.isLoading = true
+        do {
+            let movie = try await self.movieService.fetchMovie(id: id)
+            self.movie = movie
             self.isLoading = false
-            switch result {
-            case .success(let movie):
-                self.movie = movie
-            case .failure(let error):
-                self.error = error as NSError
-            }
+        } catch {
+            self.isLoading = false
+            self.error = error as NSError
         }
     }
 }
