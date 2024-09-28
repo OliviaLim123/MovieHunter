@@ -102,6 +102,7 @@ struct Movie: Decodable, Identifiable {
         videos?.results.filter { $0.youtubeURL != nil }
     }
 }
+
 struct MovieGenre: Decodable {
     let name: String
 }

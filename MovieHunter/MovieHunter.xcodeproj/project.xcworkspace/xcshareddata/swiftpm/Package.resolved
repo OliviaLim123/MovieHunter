@@ -1,15 +1,6 @@
 {
-  "originHash" : "c032e75fb32710460682ad8705c0794f0726fb06535c2ec015f1e8f5f2f4bf19",
+  "originHash" : "0a79f2009ea5ba6a9e7c2c6471d05458a7ac9a981d2fd7ab914f1eb741af1ea1",
   "pins" : [
-    {
-      "identity" : "activityindicatorview",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/JoshHrach/ActivityIndicatorView.git",
-      "state" : {
-        "revision" : "fd19ba9b78d6e20a457aed0c9ab0a204d52a08d7",
-        "version" : "1.2.1"
-      }
-    },
     {
       "identity" : "lottie-ios",
       "kind" : "remoteSourceControl",

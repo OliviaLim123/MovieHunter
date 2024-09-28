@@ -63,7 +63,7 @@ struct MovieDetailListView: View {
                             .padding(.top)
                         if let castList = self.movie.cast {
                             ForEach(castList.prefix(9)) { cast in
-                                        Text(cast.name)
+                                Text(cast.name)
                             }
                         } else {
                             Text("Cast information is not available.")
@@ -123,6 +123,7 @@ struct MovieDetailListView: View {
             if movie.youtubeTrailers != nil && movie.youtubeTrailers!.count > 0{
                 Text("Trailers")
                     .font(.headline)
+                    .padding(.top)
                 if let trailers = self.movie.youtubeTrailers {
                     ForEach(trailers) { trailer in
                         Button {
@@ -130,10 +131,12 @@ struct MovieDetailListView: View {
                         } label: {
                             HStack {
                                 Text(trailer.name)
+                                    .foregroundStyle(.black)
                                 Spacer()
                                 Image(systemName: "play.circle.fill")
                                     .foregroundStyle(.blue)
                             }
+                            .padding(.horizontal)
                         }
                     }
                 } else {

@@ -12,7 +12,8 @@ struct MovieVideoResponse: Decodable {
 }
 
 struct MovieVideo: Decodable, Identifiable {
-    let id: Int
+    let id: String // I FOUND THIS ONE MAKE ME CRAZY
+    // Previously let id: Int -- mismatch with JSON
     let key: String
     let name: String
     let site: String

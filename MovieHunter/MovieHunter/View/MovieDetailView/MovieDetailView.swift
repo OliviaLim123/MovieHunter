@@ -13,18 +13,14 @@ struct MovieDetailView: View {
     
     var body: some View {
         ZStack {
-            LoadingView(isLoading: self.movieDetailVM.isLoading, error: self.movieDetailVM.error) {
-                self.movieDetailVM.loadMovie(id: self.movieId)
-            }
-            
+        
             if movieDetailVM.movie != nil {
                 MovieDetailListView(movie: self.movieDetailVM.movie!)
+            } else {
+                LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
+                    self.movieDetailVM.loadMovie(id: self.movieId)
+                }
             }
-//            } else {
-//                LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
-//                    self.movieDetailVM.loadMovie(id: self.movieId)
-//                }
-//            }
         }
         .onAppear {
             self.movieDetailVM.loadMovie(id: self.movieId)
