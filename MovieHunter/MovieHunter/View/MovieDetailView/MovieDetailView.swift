@@ -5,33 +5,47 @@
 //  Created by Olivia Gita Amanda Lim on 27/9/2024.
 //
 
+import Foundation
 import SwiftUI
 
 struct MovieDetailView: View {
     let movieId: Int
-    @ObservedObject private var movieDetailVM = MovieDetailViewModel()
+    let movieTitle: String
+    @StateObject private var movieDetailVM = MovieDetailViewModel()
+    @State private var selectedTrailerURL: URL?
     
     var body: some View {
-        ZStack {
-        
-            if movieDetailVM.movie != nil {
-                MovieDetailListView(movie: self.movieDetailVM.movie!)
-            } else {
-                LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
-                    Task {
-                        await self.movieDetailVM.loadMovie(id: self.movieId)
-                    }
-                }
+        List {
+            if let movie = movieDetailVM.movie {
+                MovieDetailImage(imageURL: movie.backdropURL)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    .listRowSeparator(.hidden)
+                
+                MovieDetailListView(movie: movie, selectedTrailerURL: $selectedTrailerURL)
             }
+
+        }
+        .listStyle(.plain)
+        .navigationTitle(movieTitle)
+        .overlay(DataFetchPhaseOverlayView(phase: movieDetailVM.phase, retryAction: loadMovie))
+        .sheet(item: $selectedTrailerURL) {
+            SafariView(url: $0).edgesIgnoringSafeArea(.bottom)
         }
         .onAppear {
-            Task {
-                await  self.movieDetailVM.loadMovie(id: self.movieId)
-            }
+            loadMovie()
+        }
+    }
+    private func loadMovie() {
+        Task {
+            await self.movieDetailVM.loadMovie(id: self.movieId)
         }
     }
 }
 
+extension URL: @retroactive Identifiable {
+    public var id: Self { self }
+}
+
 #Preview {
-    MovieDetailView(movieId: Movie.mockSample.id)
+    MovieDetailView(movieId: Movie.mockSample.id, movieTitle: "Titanic")
 }

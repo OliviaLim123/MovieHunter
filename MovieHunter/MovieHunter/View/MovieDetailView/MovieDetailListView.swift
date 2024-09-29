@@ -10,145 +10,105 @@ import SwiftUI
 struct MovieDetailListView: View {
     let movie: Movie
     @State private var isFavorite: Bool = false
-    @State private var selectedTrailer: MovieVideo?
+    @Binding var selectedTrailerURL: URL?
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(movie.title)
-                        .font(.title)
-                        .padding(.horizontal)
-                        .fontWeight(.bold)
-                    //ADD THE HEART SYMBOL
-                    Spacer()
-                    Image(systemName: isFavorite ? "heart.fill" : "heart")
-                        .font(.system(size: 30))
-                }
-                MovieDetailImage (imageURL: movie.backdropURL)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    .listRowInsets(EdgeInsets())
-                Text(movie.genreText)
-                    .fontWeight(.bold)
-                    .padding(.horizontal)
-                HStack {
-                    Text("🗓️ \(movie.yearText)")
-                    Text(" | 🕐 \(movie.durationText)")
-                }
+//        ScrollView {
+//            VStack(alignment: .leading) {
+//                HStack {
+//                    Text(movie.title)
+//                        .font(.title)
+//                        .padding(.horizontal)
+//                        .fontWeight(.bold)
+//                    //ADD THE HEART SYMBOL
+//                    Spacer()
+//                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+//                        .font(.system(size: 30))
+//                }
+//                MovieDetailImage (imageURL: movie.backdropURL)
+//                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+//                    .listRowInsets(EdgeInsets())
+                
+        movieDescriptionSection.listRowSeparator(.visible)
+        movieCastSection.listRowSeparator(.hidden)
+        movieTrailerSection
+    }
+    private var movieDescriptionSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(movie.genreText)
                 .fontWeight(.bold)
-                .padding(.horizontal)
-                Divider()
+            HStack {
+                Text("🗓️ \(movie.yearText)")
+                Text(" | 🕐 \(movie.durationText)")
+            }
+            .font(.headline)
+            Text(movie.overview)
+            HStack {
+                if !movie.ratingText.isEmpty {
+                    Text(movie.ratingText)
+                        .foregroundStyle(.yellow)
+                }
+                Text(movie.scoreText)
+            }
+            .padding(.vertical)
+        }
+    }
+    
+    private var movieCastSection: some View {
+        HStack (alignment: .top, spacing: 4) {
+            if let cast = movie.cast, !cast.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Starring")
+                        .font(.headline)
+                    ForEach(cast.prefix(9)) { Text($0.name)}
+                }
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                 Spacer()
-                Text(movie.overview)
-                    .padding(.horizontal)
-                HStack {
-                    if !movie.ratingText.isEmpty {
-                        Text(movie.ratingText)
-                            .foregroundStyle(.yellow)
-                            .padding(.top)
-                    }
-                    Text(movie.scoreText)
-                        .padding(.top)
-                }
-                .padding(.horizontal)
             }
-            Divider()
-            
-            HStack (alignment: .top, spacing: 4) {
-                if movie.cast != nil && movie.cast!.count > 0 {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Starring")
+            if let crew = movie.crew, !crew.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    if let directors = movie.directors, !directors.isEmpty {
+                        Text("Director(s)")
                             .font(.headline)
-                            .padding(.top)
-                        if let castList = self.movie.cast {
-                            ForEach(castList.prefix(9)) { cast in
-                                Text(cast.name)
-                            }
-                        } else {
-                            Text("Cast information is not available.")
-                        }
-                        
+                        ForEach(directors.prefix(2)) { Text($0.name)}
                     }
-                    .padding(.horizontal)
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                }
-                if movie.crew != nil && movie.crew!.count > 0 {
-                    VStack(alignment: .leading, spacing: 4) {
-                        if movie.directors != nil && movie.directors!.count > 0 {
-                            Text("Director(s)")
-                                .font(.headline)
-                                .padding(.top)
-                            if let directors = self.movie.directors {
-                                ForEach(directors.prefix(2)) { crew in
-                                    Text(crew.name)
-                                }
-                            } else {
-                                Text("Directors information is not available")
-                            }
-                        }
-                        
-                        if movie.producers != nil && movie.producers!.count > 0{
-                            Text("Producer(s)")
-                                .font(.headline)
-                                .padding(.top)
-                            if let producers = self.movie.producers {
-                                ForEach(producers.prefix(2)) { crew in
-                                    Text(crew.name)
-                                }
-                            } else {
-                                Text("Producers information is not available")
-                            }
-                        }
-                        
-                        if movie.screenWriters != nil && movie.screenWriters!.count > 0{
-                            Text("Screenwriter(s)")
-                                .font(.headline)
-                                .padding(.top)
-                            if let writers = self.movie.screenWriters {
-                                ForEach(writers.prefix(2)) { crew in
-                                    Text(crew.name)
-                                }
-                            } else {
-                                Text("Screenwriters information is not available")
-                            }
-                        }
+                    
+                    if let producers = movie.producers, !producers.isEmpty {
+                        Text("Producer(s)")
+                            .font(.headline)
+                        ForEach(producers.prefix(2)) { Text($0.name)}
                     }
-                    .padding(.horizontal)
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                }
-            }
-            Divider()
-            
-            if movie.youtubeTrailers != nil && movie.youtubeTrailers!.count > 0{
-                Text("Trailers")
-                    .font(.headline)
-                    .padding(.top)
-                if let trailers = self.movie.youtubeTrailers {
-                    ForEach(trailers) { trailer in
-                        Button {
-                            self.selectedTrailer = trailer
-                        } label: {
-                            HStack {
-                                Text(trailer.name)
-                                    .foregroundStyle(.black)
-                                Spacer()
-                                Image(systemName: "play.circle.fill")
-                                    .foregroundStyle(.blue)
-                            }
-                            .padding(.horizontal)
-                        }
+                    
+                    if let screenWriters = movie.screenWriters, !screenWriters.isEmpty {
+                        Text("Screenwriter(s)")
+                            .font(.headline)
+                        ForEach(screenWriters.prefix(2)) { Text($0.name)}
                     }
-                    Spacer()
-                } else {
-                    Text("Trailers video is not available")
                 }
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
             }
         }
-        .sheet(item: self.$selectedTrailer) { trailer in
-            if let url = trailer.youtubeURL {
-                SafariView(url: url)
-            } else {
-                Text("Trailer URL is not available")
+        .padding(.vertical)
+    }
+    
+    @ViewBuilder
+    private var movieTrailerSection: some View {
+        if let trailers = movie.youtubeTrailers, !trailers.isEmpty {
+            Text("Trailers")
+                .font(.headline)
+            ForEach(trailers) { trailer in
+                Button {
+                    guard let url = trailer.youtubeURL else { return }
+                    selectedTrailerURL = url
+                } label: {
+                    HStack {
+                        Text(trailer.name)
+                            .foregroundStyle(.black)
+                        Spacer()
+                        Image(systemName: "play.circle.fill")
+                            .foregroundStyle(.blue)
+                    }
+                }
             }
         }
     }
