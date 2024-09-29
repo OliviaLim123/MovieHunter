@@ -13,22 +13,6 @@ struct MovieDetailListView: View {
     @Binding var selectedTrailerURL: URL?
     
     var body: some View {
-//        ScrollView {
-//            VStack(alignment: .leading) {
-//                HStack {
-//                    Text(movie.title)
-//                        .font(.title)
-//                        .padding(.horizontal)
-//                        .fontWeight(.bold)
-//                    //ADD THE HEART SYMBOL
-//                    Spacer()
-//                    Image(systemName: isFavorite ? "heart.fill" : "heart")
-//                        .font(.system(size: 30))
-//                }
-//                MovieDetailImage (imageURL: movie.backdropURL)
-//                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-//                    .listRowInsets(EdgeInsets())
-                
         movieDescriptionSection.listRowSeparator(.visible)
         movieCastSection.listRowSeparator(.hidden)
         movieTrailerSection
