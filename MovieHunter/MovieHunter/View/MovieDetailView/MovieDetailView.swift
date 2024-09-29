@@ -14,6 +14,7 @@ struct MovieDetailView: View {
     @StateObject private var movieDetailVM = MovieDetailViewModel()
     @State private var selectedTrailerURL: URL?
     @State private var isFavorite: Bool = false
+    let persistenceController = PersistenceController.shared
     
     var body: some View {
         List {
@@ -25,6 +26,10 @@ struct MovieDetailView: View {
                     Spacer()
                     Image(systemName: isFavorite ? "heart.fill" : "heart")
                         .font(.system(size: 30))
+                        .foregroundStyle(isFavorite ? .red : .black)
+                        .onTapGesture {
+                            toggleFavorite(movie)
+                        }
                 }
                 MovieDetailImage(imageURL: movie.backdropURL)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -35,19 +40,31 @@ struct MovieDetailView: View {
 
         }
         .listStyle(.plain)
-//        .navigationTitle(movieTitle)
         .overlay(DataFetchPhaseOverlayView(phase: movieDetailVM.phase, retryAction: loadMovie))
         .sheet(item: $selectedTrailerURL) {
             SafariView(url: $0).edgesIgnoringSafeArea(.bottom)
         }
         .onAppear {
             loadMovie()
+            checkIfFavorite()
         }
     }
     private func loadMovie() {
         Task {
             await self.movieDetailVM.loadMovie(id: self.movieId)
         }
+    }
+    private func checkIfFavorite() {
+        isFavorite = persistenceController.isFavorite(id: movieId)
+    }
+
+    private func toggleFavorite(_ movie: Movie) {
+        if isFavorite {
+            persistenceController.removeFavoriteMovie(id: movie.id)
+        } else {
+            persistenceController.addFavoriteMovie(id: movie.id, title: movie.title, year: movie.yearText, backdropURL: movie.backdropURL.absoluteString)
+        }
+        isFavorite.toggle()
     }
 }
 
