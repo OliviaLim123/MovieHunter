@@ -33,13 +33,13 @@ struct MovieHomeView: View {
         .navigationTitle("Movie Hunter Lists")
     }
     
-    
     private func loadMovies(invalidateCache: Bool) {
         Task {
             await movieHomeVM.loadMoviesFromAllEndpoints(invalidateCache: invalidateCache)
         }
     }
 }
+
 
 #Preview {
     NavigationView {

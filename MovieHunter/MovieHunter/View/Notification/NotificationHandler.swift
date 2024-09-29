@@ -8,7 +8,7 @@
 import Foundation
 import UserNotifications
 
-class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
+class NotificationHandler: NSObject,ObservableObject, UNUserNotificationCenterDelegate {
     override init() {
         super.init()
         UNUserNotificationCenter.current().delegate = self
@@ -23,7 +23,7 @@ class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
         }
     }
     
-    func sendNotification(date: Date, type: String, timeInterval: Double = 10, title: String, body: String, userInfo: [String: Any]) {
+    func sendNotification(date: Date, type: String, timeInterval: Double = 10, title: String, body: String, movieId: Int, movieTitle: String) {
         var trigger: UNNotificationTrigger?
         
         if type == "date" {
@@ -37,7 +37,7 @@ class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
         content.title = title
         content.body = body
         content.sound = UNNotificationSound.default
-        content.userInfo = userInfo
+        content.userInfo = ["movieId": movieId, "movieTitle": movieTitle]
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
@@ -45,11 +45,9 @@ class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        // Handle the notification action here
-        // Notify the app to reset the reminder state
-        if let movieId = userInfo["movieId"] as? Int {
-            NotificationCenter.default.post(name: .notificationOpened, object: nil, userInfo: ["movieId": movieId])
-        }
+        if let movieId = userInfo["movieId"] as? Int, let movieTitle = userInfo["movieTitle"] as? String {
+                NotificationCenter.default.post(name: .notificationOpened, object: nil, userInfo: ["movieId": movieId, "movieTitle": movieTitle])
+            }
         
         completionHandler()
     }

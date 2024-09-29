@@ -96,13 +96,13 @@ struct NotificationView: View {
     }
     private func scheduleNotification() {
         notify.askPermission()
-        let userInfo: [String: Any] = ["movieId": movieId]
         notify.sendNotification(
             date: selectedDate,
             type: "date",
             title: "Hey, it's time to relax!",
             body: "Don't forget to watch \(movieTitle)",
-            userInfo: userInfo)
+            movieId: movieId,              // Pass movieId directly
+            movieTitle: movieTitle  )
         showAlert = true // Show alert after scheduling
         onReminderSet()
     }
