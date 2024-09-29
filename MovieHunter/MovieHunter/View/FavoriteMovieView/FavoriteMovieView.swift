@@ -21,7 +21,7 @@ struct FavoriteMovieView: View {
                             NavigationLink(destination: MovieDetailView(movieId: Int(movie.id), movieTitle: movie.title ?? "Unknown Title")) {
                                 if let backdropURL = movie.backdropURL {
                                     FavoriteMovieImage(backdropURL: backdropURL)
-                                        .frame(width: 61, height: 92)
+                                        .frame(width: 61, height: 80)
                                         .cornerRadius(8)
                                         .shadow(radius: 4)
                                 }
@@ -39,6 +39,7 @@ struct FavoriteMovieView: View {
                         }
                         .onDelete(perform: favoriteMovieVM.deleteFavoriteMovie)
                     }
+                    .listStyle(.plain)
                 }
             }
                     
