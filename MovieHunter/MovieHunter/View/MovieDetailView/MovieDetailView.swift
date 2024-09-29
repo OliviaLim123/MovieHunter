@@ -14,6 +14,7 @@ struct MovieDetailView: View {
     @StateObject private var movieDetailVM = MovieDetailViewModel()
     @State private var selectedTrailerURL: URL?
     @State private var isFavorite: Bool = false
+    @State private var isShowingNotificationView = false
     let persistenceController = PersistenceController.shared
     
     var body: some View {
@@ -36,6 +37,20 @@ struct MovieDetailView: View {
                     .listRowSeparator(.hidden)
                 
                 MovieDetailListView(movie: movie, selectedTrailerURL: $selectedTrailerURL)
+                Button(action: {
+                    isShowingNotificationView.toggle()
+                }) {
+                    Text("Set Reminder to Watch")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
+                .sheet(isPresented: $isShowingNotificationView) {
+                    NotificationView(movieTitle: movie.title)
+                }
             }
 
         }
