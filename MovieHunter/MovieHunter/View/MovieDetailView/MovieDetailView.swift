@@ -15,6 +15,7 @@ struct MovieDetailView: View {
     @State private var selectedTrailerURL: URL?
     @State private var isFavorite: Bool = false
     @State private var isShowingNotificationView = false
+    @State private var isReminderSet = false
     let persistenceController = PersistenceController.shared
     
     var body: some View {
@@ -40,16 +41,19 @@ struct MovieDetailView: View {
                 Button(action: {
                     isShowingNotificationView.toggle()
                 }) {
-                    Text("Set Reminder to Watch")
+                    Text(isReminderSet ? "Reminder Set!" : "Set Reminder to Watch")
                         .font(.headline)
                         .foregroundColor(.white)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.blue)
+                        .background(isReminderSet ? Color.blue.opacity(0.5): Color.blue)
                         .cornerRadius(10)
                 }
+                .disabled(isReminderSet)
                 .sheet(isPresented: $isShowingNotificationView) {
-                    NotificationView(movieTitle: movie.title, imageURL: movie.backdropURL, movieRating: movie.ratingText, ratingText: movie.scoreText)
+                    NotificationView(movieId: movie.id, movieTitle: movie.title, imageURL: movie.backdropURL, movieRating: movie.ratingText, ratingText: movie.scoreText, onReminderSet : {
+                        isReminderSet = true
+                    })
                 }
             }
 
@@ -62,6 +66,14 @@ struct MovieDetailView: View {
         .onAppear {
             loadMovie()
             checkIfFavorite()
+            NotificationCenter.default.addObserver(forName: .notificationOpened, object: nil, queue: .main) { _ in
+                // Reset the reminder state when notification is opened
+                isReminderSet = false
+            }
+        }
+        .onDisappear {
+            // Prevent memory leaks
+            NotificationCenter.default.removeObserver(self, name: .notificationOpened, object: nil)
         }
     }
     private func loadMovie() {

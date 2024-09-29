@@ -46,7 +46,7 @@ struct Movie: Decodable, Identifiable {
         return URL(string: "https://image.tmdb.org/t/p/w500\(posterPath ?? "")")!
     }
     var genreText: String {
-        genres?.first?.name ?? "n/a"
+        genres?.first?.name ?? "Unknown genre"
     }
     
     var ratingText: String {
@@ -59,23 +59,23 @@ struct Movie: Decodable, Identifiable {
     
     var scoreText: String {
         guard ratingText.count > 0 else {
-            return "n/a"
+            return "No rating is available"
         }
         return "\(ratingText.count)/10"
     }
     
     var yearText: String {
         guard let releaseDate = self.releaseDate, let date = Decoder.dateFormatter.date(from: releaseDate) else {
-            return "n/a"
+            return "Unknown release date"
         }
         return Movie.yearFormatter.string(from: date)
     }
     
     var durationText: String {
         guard let runtime = self.runtime, runtime > 0 else {
-            return "n/a"
+            return "Unknown duration"
         }
-        return Movie.durationFormatter.string(from: TimeInterval(runtime) * 60) ?? "n/a"
+        return Movie.durationFormatter.string(from: TimeInterval(runtime) * 60) ?? "Unkown duration"
     }
     
     var cast: [MovieCast]? {

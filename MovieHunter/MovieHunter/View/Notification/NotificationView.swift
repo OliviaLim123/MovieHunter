@@ -9,11 +9,15 @@ import SwiftUI
 
 struct NotificationView: View {
     @State private var selectedDate = Date()
+    let movieId: Int
     let movieTitle: String
     let imageURL: URL
     let movieRating: String
     let ratingText: String
     let notify = NotificationHandler()
+    @State private var showAlert = false
+    @Environment(\.presentationMode) var presentationMode
+    var onReminderSet: () -> Void
     
     var body: some View {
         VStack {
@@ -66,7 +70,7 @@ struct NotificationView: View {
             Button(action: {
                 scheduleNotification()
             }) {
-                Text("Schedule Notification")
+                Text("Schedule Reminder")
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding()
@@ -77,19 +81,33 @@ struct NotificationView: View {
             }
             .padding(.horizontal, 30)
             .padding(.bottom, 40)
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("Schedule reminder is successful!"),
+                    message: Text("You have scheduled a reminder to watch \(movieTitle)"),
+                    dismissButton: .default(Text("OK")) {
+                        onReminderSet()
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                )
+            }
         }
         .background(Color.white.ignoresSafeArea())
     }
     private func scheduleNotification() {
         notify.askPermission()
+        let userInfo: [String: Any] = ["movieId": movieId]
         notify.sendNotification(
             date: selectedDate,
-            type: "time",
+            type: "date",
             title: "Hey, it's time to relax!",
-            body: "Don't forget to watch \(movieTitle)")
+            body: "Don't forget to watch \(movieTitle)",
+            userInfo: userInfo)
+        showAlert = true // Show alert after scheduling
+        onReminderSet()
     }
 }
 
 #Preview {
-    NotificationView(movieTitle: Movie.mockSample.title, imageURL: Movie.mockSample.backdropURL, movieRating: Movie.mockSample.ratingText, ratingText: Movie.mockSample.scoreText)
+    NotificationView(movieId: Movie.mockSample.id, movieTitle: Movie.mockSample.title, imageURL: Movie.mockSample.backdropURL, movieRating: Movie.mockSample.ratingText, ratingText: Movie.mockSample.scoreText, onReminderSet: {})
 }
