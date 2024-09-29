@@ -10,6 +10,9 @@ import SwiftUI
 struct NotificationView: View {
     @State private var selectedDate = Date()
     let movieTitle: String
+    let imageURL: URL
+    let movieRating: String
+    let ratingText: String
     let notify = NotificationHandler()
     
     var body: some View {
@@ -26,6 +29,27 @@ struct NotificationView: View {
                 .fontWeight(.semibold)
                 .foregroundColor(.gray)
                 .padding(.bottom, 20)
+            AsyncImage(url: imageURL) { image in
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 200)
+                    .cornerRadius(20)
+                    .shadow(radius: 5)
+            } placeholder: {
+                Image(systemName: "film")
+                    .resizable()
+                    .frame(width: 200)
+            }
+            .padding(.horizontal, 30)
+            .padding(.bottom, 20)
+            HStack {
+                Text(movieRating)
+                    .foregroundStyle(.yellow)
+                Text(ratingText)
+                    .font(.subheadline)
+            }
+            .padding(.bottom)
             VStack {
                 Text("Select Date and Time")
                     .font(.headline)
@@ -67,5 +91,5 @@ struct NotificationView: View {
 }
 
 #Preview {
-    NotificationView(movieTitle: "Minion")
+    NotificationView(movieTitle: Movie.mockSample.title, imageURL: Movie.mockSample.backdropURL, movieRating: Movie.mockSample.ratingText, ratingText: Movie.mockSample.scoreText)
 }

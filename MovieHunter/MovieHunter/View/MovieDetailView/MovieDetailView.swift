@@ -49,7 +49,7 @@ struct MovieDetailView: View {
                         .cornerRadius(10)
                 }
                 .sheet(isPresented: $isShowingNotificationView) {
-                    NotificationView(movieTitle: movie.title)
+                    NotificationView(movieTitle: movie.title, imageURL: movie.backdropURL, movieRating: movie.ratingText, ratingText: movie.scoreText)
                 }
             }
 
