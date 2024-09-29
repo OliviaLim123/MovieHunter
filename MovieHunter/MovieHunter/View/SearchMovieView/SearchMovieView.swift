@@ -6,40 +6,67 @@
 //
 
 import SwiftUI
-
 struct SearchMovieView: View {
-    @ObservedObject var movieSearchVM = MovieSearchViewModel()
+    @StateObject var movieSearchVM = MovieSearchViewModel()
     
     var body: some View {
-        ScrollView {
-            SearchBarView(placeholder: "Search movies", text: self.$movieSearchVM.query)
-                .padding(.horizontal, 10)
-            
-            LottieView(name: Constants.loadingAnimation, loopMode: .loop, animationSpeed: 1.0) {
-                Task {
-                    await self.movieSearchVM.search(query: self.movieSearchVM.query)
-                }
-            }
-            
-            if self.movieSearchVM.movies != nil {
-                if let movies = self.movieSearchVM.movies {
-                    ForEach(movies) { movie in
-                        NavigationLink(destination: MovieDetailView(movieId: movie.id, movieTitle: movie.title)) {
-                            VStack(alignment: .leading) {
-                                Text(movie.title)
-                                Text(movie.yearText)
-                            }
-                        }
-                    }
-                } else {
-                    Text("No movies are found.")
+        List {
+            ForEach(movieSearchVM.movies) { movie in
+                NavigationLink(destination: MovieDetailView(movieId: movie.id, movieTitle: movie.title)) {
+                    MovieRowView(movie: movie)
+                        .padding(.vertical, 8)
                 }
             }
         }
+        .searchable(text: $movieSearchVM.query, prompt: "Search movies")
+        .overlay(overlayView)
         .onAppear {
-            self.movieSearchVM.startObserve()
+            movieSearchVM.startObserve()
         }
-        .navigationBarTitle("Search Movies")
+        .listStyle(.plain)
+        .navigationTitle("Search Movies")
+    }
+    
+    @ViewBuilder
+    private var overlayView: some View {
+        switch movieSearchVM.phase {
+        case .empty:
+            if movieSearchVM.trimmedQuery.isEmpty {
+                EmptyPlaceholderView(text: "Search your favourite movie", image: Image(systemName: "magnifyingglass"))
+            } else {
+                ProgressView()
+            }
+            
+        case .success(let value) where value.isEmpty:
+            EmptyPlaceholderView(text: "No results", image: Image(systemName: "film"))
+            
+        case .failure(let error):
+            RetryView(text: error.localizedDescription, retryAction: {
+                Task {
+                    await movieSearchVM.search(query: movieSearchVM.query)
+                }
+            })
+        default: EmptyView()
+        }
+    }
+}
+
+struct MovieRowView: View {
+    let movie: Movie
+    var body: some View {
+        HStack(alignment: .top, spacing: 16) {
+            MovieTumbnailView(movie: movie, thumbnailType: .poster(showTitle: false))
+                .frame(width: 61, height: 92)
+            VStack(alignment: .leading) {
+                Text(movie.title)
+                    .font(.headline)
+                Text(movie.yearText)
+                    .font(.subheadline)
+                Spacer()
+                Text(movie.ratingText)
+                    .foregroundStyle(.yellow)
+            }
+        }
     }
 }
 

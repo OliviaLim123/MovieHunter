@@ -34,14 +34,15 @@ class MovieAPIManager: MovieService {
     }
     
     func searchMovie(query: String) async throws -> [Movie] {
-        guard let url = URL(string: "\(baseAPIURL)/search/movie/") else {
+        guard let url = URL(string: "\(baseAPIURL)/search/movie") else {
             throw MovieError.invalidEndpoint
         }
-        let movieResponse: MovieResponse = try await self.loadURLAndDecode(url: url, params: [ "language" : "en-US",
-                           "include_adult" : "false",
-                           "region" : "US",
-                           "query" : query
-                        ])
+        let movieResponse: MovieResponse = try await self.loadURLAndDecode(url: url, params: [
+            "language" : "en-US",
+            "include_adult" : "false",
+            "region" : "US",
+            "query" : query
+            ])
         return movieResponse.results
     }
     

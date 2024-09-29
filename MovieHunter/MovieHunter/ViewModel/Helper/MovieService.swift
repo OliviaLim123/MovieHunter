@@ -13,7 +13,10 @@ protocol MovieService {
     func searchMovie(query: String) async throws -> [Movie]
 }
 
-enum MovieListEndPoint: String, CaseIterable {
+enum MovieListEndPoint: String, CaseIterable, Identifiable {
+    
+    var id: String { rawValue }
+    
     case nowPlaying = "now_playing"
     case upcoming
     case topRated = "top_rated"
