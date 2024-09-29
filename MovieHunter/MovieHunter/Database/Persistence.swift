@@ -37,13 +37,14 @@ class PersistenceController {
     }
 
     // Save favorite movie
-    func addFavoriteMovie(id: Int, title: String, year: String, backdropURL: String) {
+    func addFavoriteMovie(id: Int, title: String, year: String, backdropURL: String, rating: String) {
         let context = container.viewContext
         let favoriteMovie = FavoriteMovie(context: context)
         favoriteMovie.id = Int64(id)
         favoriteMovie.title = title
         favoriteMovie.yearText = year
         favoriteMovie.backdropURL = backdropURL
+        favoriteMovie.ratingText = rating
         
         saveContext()
     }

@@ -27,14 +27,13 @@ struct TabView: View {
                         SearchMovieView()
                     }
                 case .heart:
-                    WatchListView()
+                    FavoriteMovieView()
                 case .person:
                     ProfileView()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(.bottom, 100)
-//            .ignoresSafeArea(.all, edges: .bottom)
             VStack {
                 Spacer()
                 CustomTabBar(selectedTab: $selectedTab)

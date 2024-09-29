@@ -62,7 +62,7 @@ struct MovieDetailView: View {
         if isFavorite {
             persistenceController.removeFavoriteMovie(id: movie.id)
         } else {
-            persistenceController.addFavoriteMovie(id: movie.id, title: movie.title, year: movie.yearText, backdropURL: movie.backdropURL.absoluteString)
+            persistenceController.addFavoriteMovie(id: movie.id, title: movie.title, year: movie.yearText, backdropURL: movie.backdropURL.absoluteString, rating: movie.ratingText)
         }
         isFavorite.toggle()
     }
