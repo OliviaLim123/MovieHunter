@@ -19,9 +19,7 @@ struct SwiftUIView: View {
             Text(isRecording ? (speechRecognizer.transcript.isEmpty ? "Speak Now" : speechRecognizer.transcript) : "")
                 .frame(width: 300, height: 200, alignment: .center)
             Spacer()
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                .scaleEffect(2)
+            LottieView(name: Constants.voiceAnimation, loopMode: .loop, animationSpeed: 1.0, retryAction: {})
             Spacer()
             
             Button(action: {
