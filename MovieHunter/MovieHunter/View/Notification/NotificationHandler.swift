@@ -52,9 +52,10 @@ class NotificationHandler: NSObject,ObservableObject, UNUserNotificationCenterDe
             NotificationCenter.default.post(name: .notificationOpened, object: nil, userInfo: ["movieId": movieId, "movieTitle": movieTitle])
             let notificationMessage = "Reminder: \(movieTitle)"
             notifications.append(notificationMessage)
-            DispatchQueue.main.async {
-                self.notificationReceived = true
-            }
+            self.notificationReceived = true
+//            DispatchQueue.main.async {
+//                self.notificationReceived = true
+//            }
         }
         completionHandler()
     }
