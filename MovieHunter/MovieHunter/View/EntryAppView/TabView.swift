@@ -19,7 +19,7 @@ struct TabView: View {
             VStack {
                 switch selectedTab {
                 case .movieclapper:
-                    NavigationView {
+                    NavigationStack {
                         MovieHomeView()
                     }
                 case .menucard:

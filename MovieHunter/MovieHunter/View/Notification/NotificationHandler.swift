@@ -9,6 +9,9 @@ import Foundation
 import UserNotifications
 
 class NotificationHandler: NSObject,ObservableObject, UNUserNotificationCenterDelegate {
+    @Published var notificationReceived = false
+    @Published var notifications: [String] = []
+    
     override init() {
         super.init()
         UNUserNotificationCenter.current().delegate = self
@@ -46,9 +49,13 @@ class NotificationHandler: NSObject,ObservableObject, UNUserNotificationCenterDe
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         if let movieId = userInfo["movieId"] as? Int, let movieTitle = userInfo["movieTitle"] as? String {
-                NotificationCenter.default.post(name: .notificationOpened, object: nil, userInfo: ["movieId": movieId, "movieTitle": movieTitle])
+            NotificationCenter.default.post(name: .notificationOpened, object: nil, userInfo: ["movieId": movieId, "movieTitle": movieTitle])
+            let notificationMessage = "Reminder: \(movieTitle)"
+            notifications.append(notificationMessage)
+            DispatchQueue.main.async {
+                self.notificationReceived = true
             }
-        
+        }
         completionHandler()
     }
 }

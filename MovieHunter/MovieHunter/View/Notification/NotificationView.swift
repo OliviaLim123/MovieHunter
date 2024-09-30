@@ -103,9 +103,23 @@ struct NotificationView: View {
             body: "Don't forget to watch \(movieTitle)",
             movieId: movieId,              // Pass movieId directly
             movieTitle: movieTitle  )
+        saveNotification()
         showAlert = true // Show alert after scheduling
         onReminderSet()
     }
+    
+    private func saveNotification() {
+            let notificationData: [String: Any] = [
+                "movieId": movieId,
+                "movieTitle": movieTitle,
+                "date": selectedDate
+            ]
+            
+            var savedNotifications = UserDefaults.standard.array(forKey: "savedNotifications") as? [[String: Any]] ?? []
+            savedNotifications.append(notificationData)
+            
+            UserDefaults.standard.set(savedNotifications, forKey: "savedNotifications")
+        }
 }
 
 #Preview {

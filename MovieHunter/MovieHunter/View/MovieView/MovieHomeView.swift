@@ -11,6 +11,10 @@ import SwiftUI
 struct MovieHomeView: View {
     
     @StateObject private var movieHomeVM = MovieHomeViewModel()
+    @StateObject private var notificationHandler = NotificationHandler()
+    @State private var hasNotification = false
+    @State private var showNotificationList = false
+    @State private var reminders: [Reminders] = []
     
     var body: some View {
         List {
@@ -31,18 +35,72 @@ struct MovieHomeView: View {
         }))
         .listStyle(.plain)
         .navigationTitle("Movie Hunter Lists")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                bellIcon
+            }
+        }
+        .onAppear {
+            loadReminders()  // Load reminders when the view appears
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .notificationOpened)) { _ in
+            hasNotification = false  // Reset notification badge after it is opened
+        }
+        .sheet(isPresented: $showNotificationList) {
+            ReminderListView(reminders: $reminders) {  // Pass reminders as Binding
+                hasNotification = false  // Reset badge when ReminderListView is dismissed
+            }
+        }
     }
     
+    private var bellIcon: some View {
+        ZStack {
+            Image(systemName: "bell")
+                .foregroundColor(.primary)
+                .onTapGesture {
+                    showNotificationList = true  // Show the notification list when tapped
+                }
+            if hasNotification {
+                Circle()
+                    .fill(Color.red)
+                    .frame(width: 10, height: 10)
+                    .offset(x: 8, y: -8)  // Adjusted positioning of the red badge
+            }
+        }
+        .onAppear {
+            notificationHandler.askPermission()  // Ask for notification permissions
+        }
+        .onReceive(notificationHandler.$notificationReceived) { received in
+            hasNotification = received  // Update the notification state when received
+        }
+    }
+        
     private func loadMovies(invalidateCache: Bool) {
         Task {
             await movieHomeVM.loadMoviesFromAllEndpoints(invalidateCache: invalidateCache)
+        }
+    }
+    
+    private func loadReminders() {
+        if let savedReminders = UserDefaults.standard.array(forKey: "savedNotifications") as? [[String: Any]] {
+            reminders = savedReminders.compactMap { dict in
+                if let movieId = dict["movieId"] as? Int,
+                   let movieTitle = dict["movieTitle"] as? String,
+                   let date = dict["date"] as? Date {
+                    return Reminders(movieId: movieId, movieTitle: movieTitle, date: date)
+                }
+                return nil
+            }
+            if !reminders.isEmpty {
+                hasNotification = true
+            }
         }
     }
 }
 
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         MovieHomeView()
     }
 }
