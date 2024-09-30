@@ -16,13 +16,23 @@ struct ReminderListView: View {
     
     var body: some View {
         NavigationView {
-            List(sortedReminders) { reminder in
-                VStack(alignment: .leading) {
-                    Text(reminder.movieTitle)
-                        .font(.headline)
-                    Text("\(formattedDate(reminder.date))")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+            Group {
+                if reminders.isEmpty {
+                    VStack {
+                        EmptyPlaceholderView(text: "Sorry, no reminders!", image: Image(systemName: "calendar.badge.exclamationmark"))
+                    }
+                } else {
+                    List(sortedReminders) { reminder in
+                        NavigationLink(destination: MovieDetailView(movieId: reminder.movieId, movieTitle: reminder.movieTitle)) {
+                            VStack(alignment: .leading) {
+                                Text(reminder.movieTitle)
+                                    .font(.headline)
+                                Text("\(formattedDate(reminder.date))")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    }
                 }
             }
             .navigationTitle("Your Reminders")
@@ -39,6 +49,7 @@ struct ReminderListView: View {
                 .foregroundColor(.red)  // Color for the clear button
         }
     }
+    
     private func clearReminders() {
         // Clear reminders and update UserDefaults
         reminders.removeAll()  // This will work because reminders is a Binding
