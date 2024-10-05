@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ReminderListView: View {
     @Binding var reminders: [Reminders]   // Accept reminders as a parameter
@@ -37,10 +38,14 @@ struct ReminderListView: View {
             }
             .navigationTitle("Your Reminders")
             .navigationBarItems(trailing: clearButton)
+            .onAppear(perform: loadUserReminders)
             .onDisappear {
                 onDismiss()  // Notify when the view is dismissed
             }
         }
+    }
+    private func loadUserReminders() {
+        reminders = loadUserReminders()  // Load reminders for the current user
     }
     
     private var clearButton: some View {
@@ -61,5 +66,29 @@ struct ReminderListView: View {
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
         return formatter.string(from: date)
+    }
+    func loadUserReminders() -> [Reminders] {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("No user is logged in")
+            return []
+        }
+        
+        let savedNotifications = UserDefaults.standard.array(forKey: "savedNotifications") as? [[String: Any]] ?? []
+        
+        // Filter reminders by the current user's userId
+        let userReminders = savedNotifications.filter { notification in
+            return notification["userId"] as? String == userId
+        }
+        
+        // Convert the filtered dictionary data back into Reminders objects
+        let reminders = userReminders.compactMap { data -> Reminders? in
+            guard let movieId = data["movieId"] as? Int,
+                  let movieTitle = data["movieTitle"] as? String,
+                  let date = data["date"] as? Date else { return nil }
+            
+            return Reminders(movieId: movieId, movieTitle: movieTitle, date: date)
+        }
+        
+        return reminders
     }
 }

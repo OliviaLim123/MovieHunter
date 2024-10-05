@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct NotificationView: View {
     @State private var selectedDate = Date()
@@ -109,17 +110,22 @@ struct NotificationView: View {
     }
     
     private func saveNotification() {
-            let notificationData: [String: Any] = [
-                "movieId": movieId,
-                "movieTitle": movieTitle,
-                "date": selectedDate
-            ]
-            
-            var savedNotifications = UserDefaults.standard.array(forKey: "savedNotifications") as? [[String: Any]] ?? []
-            savedNotifications.append(notificationData)
-            
-            UserDefaults.standard.set(savedNotifications, forKey: "savedNotifications")
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("No user is logged in")
+            return
         }
+        let notificationData: [String: Any] = [
+            "movieId": movieId,
+            "movieTitle": movieTitle,
+            "date": selectedDate,
+            "userId": userId
+        ]
+        
+        var savedNotifications = UserDefaults.standard.array(forKey: "savedNotifications") as? [[String: Any]] ?? []
+        savedNotifications.append(notificationData)
+        
+        UserDefaults.standard.set(savedNotifications, forKey: "savedNotifications")
+    }
 }
 
 #Preview {
