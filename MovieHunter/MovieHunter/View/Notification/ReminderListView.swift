@@ -11,6 +11,7 @@ import FirebaseAuth
 struct ReminderListView: View {
     @Binding var reminders: [Reminders]   // Accept reminders as a parameter
     var onDismiss: () -> Void
+    let notify = NotificationHandler()
     private var sortedReminders: [Reminders] {
         reminders.sorted { $0.date > $1.date }
     }
@@ -45,7 +46,7 @@ struct ReminderListView: View {
         }
     }
     private func loadUserReminders() {
-        reminders = loadUserReminders()  // Load reminders for the current user
+        reminders = notify.getUserReminders()  // Load reminders for the current user
     }
     
     private var clearButton: some View {
@@ -56,9 +57,18 @@ struct ReminderListView: View {
     }
     
     private func clearReminders() {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("No user is logged in")
+            return
+        }
+        var savedNotifications = UserDefaults.standard.array(forKey: "savedNotifications") as? [[String: Any]] ?? []
+        savedNotifications.removeAll { notification in
+            return notification["userId"] as? String == userId
+        }
+    
+        UserDefaults.standard.removeObject(forKey: "savedNotifications")  // Clear saved notifications in UserDefaults
         // Clear reminders and update UserDefaults
         reminders.removeAll()  // This will work because reminders is a Binding
-        UserDefaults.standard.removeObject(forKey: "savedNotifications")  // Clear saved notifications in UserDefaults
     }
     
     private func formattedDate(_ date: Date) -> String {
@@ -67,28 +77,28 @@ struct ReminderListView: View {
         formatter.timeStyle = .short
         return formatter.string(from: date)
     }
-    func loadUserReminders() -> [Reminders] {
-        guard let userId = Auth.auth().currentUser?.uid else {
-            print("No user is logged in")
-            return []
-        }
-        
-        let savedNotifications = UserDefaults.standard.array(forKey: "savedNotifications") as? [[String: Any]] ?? []
-        
-        // Filter reminders by the current user's userId
-        let userReminders = savedNotifications.filter { notification in
-            return notification["userId"] as? String == userId
-        }
-        
-        // Convert the filtered dictionary data back into Reminders objects
-        let reminders = userReminders.compactMap { data -> Reminders? in
-            guard let movieId = data["movieId"] as? Int,
-                  let movieTitle = data["movieTitle"] as? String,
-                  let date = data["date"] as? Date else { return nil }
-            
-            return Reminders(movieId: movieId, movieTitle: movieTitle, date: date)
-        }
-        
-        return reminders
-    }
+//    func getUserReminders() -> [Reminders] {
+//        guard let userId = Auth.auth().currentUser?.uid else {
+//            print("No user is logged in")
+//            return []
+//        }
+//        
+//        let savedNotifications = UserDefaults.standard.array(forKey: "savedNotifications") as? [[String: Any]] ?? []
+//        
+//        // Filter reminders by the current user's userId
+//        let userReminders = savedNotifications.filter { notification in
+//            return notification["userId"] as? String == userId
+//        }
+//        
+//        // Convert the filtered dictionary data back into Reminders objects
+//        let reminders = userReminders.compactMap { data -> Reminders? in
+//            guard let movieId = data["movieId"] as? Int,
+//                  let movieTitle = data["movieTitle"] as? String,
+//                  let date = data["date"] as? Date else { return nil }
+//            
+//            return Reminders(movieId: movieId, movieTitle: movieTitle, date: date)
+//        }
+//        
+//        return reminders
+//    }
 }

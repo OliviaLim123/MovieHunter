@@ -7,6 +7,7 @@
 
 import Foundation
 import UserNotifications
+import FirebaseAuth
 
 class NotificationHandler: NSObject,ObservableObject, UNUserNotificationCenterDelegate {
     @Published var notificationReceived = false
@@ -58,6 +59,31 @@ class NotificationHandler: NSObject,ObservableObject, UNUserNotificationCenterDe
 //            }
         }
         completionHandler()
+    }
+    
+    func getUserReminders() -> [Reminders] {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("No user is logged in")
+            return []
+        }
+        
+        let savedNotifications = UserDefaults.standard.array(forKey: "savedNotifications") as? [[String: Any]] ?? []
+        
+        // Filter reminders by the current user's userId
+        let userReminders = savedNotifications.filter { notification in
+            return notification["userId"] as? String == userId
+        }
+        
+        // Convert the filtered dictionary data back into Reminders objects
+        let reminders = userReminders.compactMap { data -> Reminders? in
+            guard let movieId = data["movieId"] as? Int,
+                  let movieTitle = data["movieTitle"] as? String,
+                  let date = data["date"] as? Date else { return nil }
+            
+            return Reminders(movieId: movieId, movieTitle: movieTitle, date: date)
+        }
+        
+        return reminders
     }
 }
 extension Notification.Name {

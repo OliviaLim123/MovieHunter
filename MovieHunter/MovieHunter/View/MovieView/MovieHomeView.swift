@@ -15,6 +15,7 @@ struct MovieHomeView: View {
     @State private var hasNotification = false
     @State private var showNotificationList = false
     @State private var reminders: [Reminders] = []
+    let notify = NotificationHandler()
     
     var body: some View {
         List {
@@ -69,6 +70,7 @@ struct MovieHomeView: View {
         }
         .onAppear {
             notificationHandler.askPermission()  // Ask for notification permissions
+            loadUserReminders()
         }
         .onReceive(notificationHandler.$notificationReceived) { received in
             hasNotification = received  // Update the notification state when received
@@ -95,6 +97,14 @@ struct MovieHomeView: View {
                 hasNotification = true
             }
         }
+    }
+    
+    private func loadUserReminders() {
+        let userReminders = notify.getUserReminders()  // Fetch the current user's reminders
+        reminders = userReminders  // Update the local reminders
+        
+        // If there are any reminders, set the bell icon to show a red badge
+        hasNotification = !userReminders.isEmpty
     }
 }
 
