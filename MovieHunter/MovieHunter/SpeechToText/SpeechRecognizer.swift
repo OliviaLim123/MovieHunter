@@ -84,6 +84,8 @@ public class SpeechRecognizer: ObservableObject {
                     self.audioEngine = audioEngine
                     self.request = request
                     
+                    try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
+                    
                     self.task = recognizer.recognitionTask(with: request) { result, error in
                         let receivedFinalResult = result?.isFinal ?? false
                         let receivedError = error != nil // != nil mean there's error (true)
@@ -95,6 +97,11 @@ public class SpeechRecognizer: ObservableObject {
                         
                         if let result = result {
                             self.speak(result.bestTranscription.formattedString)
+                        }
+                        
+                        if receivedError {
+                            self.reset()
+                            self.transcribe()
                         }
                     }
                 } catch {

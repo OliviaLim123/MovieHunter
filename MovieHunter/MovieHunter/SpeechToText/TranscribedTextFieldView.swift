@@ -34,7 +34,11 @@ public struct TranscribedTextFieldView: View {
                 .frame(width: micIconWidth, height: micIconHeight)
                 .foregroundStyle( color )
                 .onTapGesture {
-                    isRecording.toggle()
+//                    isRecording.toggle()
+                    if !isRecording {
+                                // Ensure any ongoing session is stopped before starting
+                                isRecording = true
+                            }
                 }
         }
         .sheet(isPresented: $isRecording){
