@@ -11,6 +11,7 @@ import FirebaseAuth
 struct ProfileView: View {
     @State private var navigateToLogin: Bool = false
     @State private var email: String? = nil
+    @State private var accountCreationDate: String? = nil
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
     @State private var showSuccess: Bool = false
@@ -19,7 +20,8 @@ struct ProfileView: View {
     
     var body: some View {
         VStack {
-            if let userEmail = email {
+//            if let userEmail = email {
+            if let userEmail = email, let creationDate = accountCreationDate {
                 VStack {
                     Text("Welcome back!")
                         .font(.title)
@@ -36,6 +38,10 @@ struct ProfileView: View {
                     Text("\(userEmail)")
                         .font(.title3)
                         .fontWeight(.bold)
+                        .padding(.bottom, 20)
+                    Text("Account Created on \(creationDate)")
+                        .font(.footnote)
+                        .foregroundColor(.gray)
                         .padding(.bottom, 20)
                 }
             } else {
@@ -88,7 +94,7 @@ struct ProfileView: View {
             }
             .background(Color.blue)
             .cornerRadius(10)
-            .padding(.top, 25)
+            .padding(.top, 15)
             
             Button {
                 deleteAccount()
@@ -117,6 +123,15 @@ struct ProfileView: View {
     private func fetchUserEmail() {
         if let user = Auth.auth().currentUser {
             email = user.email // Get the user's email
+            let creationDate = user.metadata.creationDate
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .none
+            if let creationDate = creationDate {
+                accountCreationDate = dateFormatter.string(from: creationDate)
+            } else {
+                accountCreationDate = "Unavailable"
+            }
         } else {
             email = "No user found"
         }

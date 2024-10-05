@@ -40,7 +40,14 @@ struct SwiftUIView: View {
         .onDisappear{
             color = .gray
             speechRecognizer.stopTranscribing()
-            searchText = speechRecognizer.transcript
+//            searchText = speechRecognizer.transcript
+        }
+        .onChange(of: speechRecognizer.hasStoppedRecording) {
+            // Automatically perform search when the recording has stopped
+            if speechRecognizer.hasStoppedRecording {
+                searchText = speechRecognizer.transcript
+                isRecording = false // Ensure the recording state is updated
+            }
         }
     }
 }
