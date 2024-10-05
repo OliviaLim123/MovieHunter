@@ -37,7 +37,7 @@ public class SpeechRecognizer: ObservableObject {
     private var recognizer: SFSpeechRecognizer? = nil
     
     private var silenceTimer: Timer?
-    private let silenceTimeout: TimeInterval = 1
+    private let silenceTimeout: TimeInterval = 2
     
     public init(localeIdentifier: String = Locale.current.identifier) {
         recognizer = SFSpeechRecognizer(locale: Locale(identifier: localeIdentifier))
