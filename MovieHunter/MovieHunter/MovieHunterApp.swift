@@ -11,7 +11,9 @@ import SwiftUI
 struct MovieHunterApp: App {
     var body: some Scene {
         WindowGroup {
-            TabView()
+            NavigationStack {
+                LaunchScreenView()
+            }
         }
     }
 }

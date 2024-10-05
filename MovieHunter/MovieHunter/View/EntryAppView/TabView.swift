@@ -19,13 +19,9 @@ struct TabView: View {
             VStack {
                 switch selectedTab {
                 case .movieclapper:
-                    NavigationStack {
-                        MovieHomeView()
-                    }
+                    MovieHomeView()
                 case .menucard:
-                    NavigationView {
-                        SearchMovieView()
-                    }
+                    SearchMovieView()
                 case .heart:
                     FavoriteMovieView()
                 case .person:
