@@ -12,10 +12,10 @@ struct MovieHomeView: View {
     
     @StateObject private var movieHomeVM = MovieHomeViewModel()
     @StateObject private var notificationHandler = NotificationHandler()
+    @StateObject private var profileVM = ProfileViewModel()
     @State private var hasNotification = false
     @State private var showNotificationList = false
     @State private var reminders: [Reminders] = []
-    let notify = NotificationHandler()
     
     var body: some View {
         List {
@@ -43,6 +43,8 @@ struct MovieHomeView: View {
         }
         .onAppear {
             loadReminders()  // Load reminders when the view appears
+            profileVM.loadUserThemePreference()
+            profileVM.updateColorScheme()
         }
         .onReceive(NotificationCenter.default.publisher(for: .notificationOpened)) { _ in
             hasNotification = false  // Reset notification badge after it is opened
@@ -100,7 +102,7 @@ struct MovieHomeView: View {
     }
     
     private func loadUserReminders() {
-        let userReminders = notify.getUserReminders()  // Fetch the current user's reminders
+        let userReminders = notificationHandler.getUserReminders()  // Fetch the current user's reminders
         reminders = userReminders  // Update the local reminders
         
         // If there are any reminders, set the bell icon to show a red badge

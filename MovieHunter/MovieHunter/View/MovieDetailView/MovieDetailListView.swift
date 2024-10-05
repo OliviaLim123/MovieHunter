@@ -87,7 +87,6 @@ struct MovieDetailListView: View {
                 } label: {
                     HStack {
                         Text(trailer.name)
-                            .foregroundStyle(.black)
                         Spacer()
                         Image(systemName: "play.circle.fill")
                             .foregroundStyle(.blue)

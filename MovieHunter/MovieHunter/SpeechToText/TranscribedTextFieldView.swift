@@ -16,7 +16,7 @@ public struct TranscribedTextFieldView: View {
     var micIconWidth:CGFloat
     var micIconHeight:CGFloat
     
-    public init(color: Color = .black, isRecording: Bool = false, searchText: Binding<String>, placeHolder: String = "Please enter movie title", micIconWidth: CGFloat = 12, micIconHeight: CGFloat = 20) {
+    public init(color: Color = Color("customBlack"), isRecording: Bool = false, searchText: Binding<String>, placeHolder: String = "Please enter movie title", micIconWidth: CGFloat = 12, micIconHeight: CGFloat = 20) {
         self.color = color
         self.isRecording = isRecording
         self._searchText = searchText

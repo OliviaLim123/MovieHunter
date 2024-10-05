@@ -13,6 +13,7 @@ struct ProfileView: View {
     @State private var email: String? = nil
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
+    @StateObject private var profileVM = ProfileViewModel()
     
     var body: some View {
         VStack {
@@ -20,19 +21,32 @@ struct ProfileView: View {
                 Text("Welcome, \(userEmail)")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundStyle(Color.black.opacity(0.7))
             } else {
                 Text("Fetching user info...")
                     .font(.title)
-                    .foregroundStyle(Color.black.opacity(0.7))
             }
             
+            Spacer()
+            Toggle(isOn: profileVM.$isDarkMode) {
+                HStack {
+                    Image(systemName: profileVM.isDarkMode ? "moon.fill" : "sun.max.fill")
+                        .foregroundColor(profileVM.isDarkMode ? .gray : .yellow)  
+                                .font(.system(size: 24))
+                    Text("Enable Night Mode")
+                        .multilineTextAlignment(.leading)
+                }
+            }
+            .padding(.horizontal, 25)
+            .onChange(of: profileVM.isDarkMode) { newValue, _ in
+                profileVM.updateColorScheme()
+            }
             Spacer()
             
             Button {
                 try! Auth.auth().signOut()
                 UserDefaults.standard.set(false, forKey: "status")
                 NotificationCenter.default.post(name: NSNotification.Name("status"), object: nil)
+                setAppToLightMode()
                 navigateToLogin = true
             } label :{
                 Text("Log out")
@@ -91,8 +105,17 @@ struct ProfileView: View {
                 // Account deleted, log out and navigate to login screen
                 UserDefaults.standard.set(false, forKey: "status")
                 NotificationCenter.default.post(name: NSNotification.Name("status"), object: nil)
+                setAppToLightMode()
                 navigateToLogin = true
             }
+        }
+    }
+    
+    private func setAppToLightMode() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+        
+        for window in windowScene.windows {
+            window.overrideUserInterfaceStyle = .light  // Force light mode
         }
     }
 }

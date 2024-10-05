@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseAuth
 
 struct LoginView: View {
-    @State var color = Color.black.opacity(0.7)
+    @State var color = Color("customBlack")
     @State var email: String = ""
     @State var password: String = ""
     @State var visible: Bool = false

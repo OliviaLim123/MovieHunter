@@ -39,7 +39,7 @@ struct CustomTabBar: View {
                     Spacer()
                     Image(systemName: selectedTab == tab ? fillImage : tab.rawValue)
                         .scaleEffect(selectedTab == tab ? 1.25 : 1.0)
-                        .foregroundStyle(selectedTab == tab ? tabColor : .black)
+                        .foregroundStyle(selectedTab == tab ? tabColor : Color("customBlack"))
                         .font(.system(size:22))
                         .onTapGesture {
                             withAnimation(.easeIn(duration:0.1)) {
