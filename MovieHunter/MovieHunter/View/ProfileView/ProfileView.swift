@@ -13,14 +13,31 @@ struct ProfileView: View {
     @State private var email: String? = nil
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
+    @State private var showSuccess: Bool = false
+    @State private var successMessage: String = ""
     @StateObject private var profileVM = ProfileViewModel()
     
     var body: some View {
         VStack {
             if let userEmail = email {
-                Text("Welcome, \(userEmail)")
-                    .font(.title)
-                    .fontWeight(.bold)
+                VStack {
+                    Text("Welcome back!")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.leading)
+                        .padding(.bottom, 20)
+                    Text(getInitial(from: userEmail))
+                        .font(.system(size: 64, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(width: 100, height: 100)
+                        .background(Color.gray)
+                        .clipShape(Circle())
+                        .padding(.bottom, 20)
+                    Text("\(userEmail)")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .padding(.bottom, 20)
+                }
             } else {
                 Text("Fetching user info...")
                     .font(.title)
@@ -30,7 +47,7 @@ struct ProfileView: View {
             Toggle(isOn: profileVM.$isDarkMode) {
                 HStack {
                     Image(systemName: profileVM.isDarkMode ? "moon.fill" : "sun.max.fill")
-                        .foregroundColor(profileVM.isDarkMode ? .gray : .yellow)  
+                        .foregroundColor(profileVM.isDarkMode ? .gray : .yellow)
                                 .font(.system(size: 24))
                     Text("Enable Night Mode")
                         .multilineTextAlignment(.leading)
@@ -41,6 +58,21 @@ struct ProfileView: View {
                 profileVM.updateColorScheme()
             }
             Spacer()
+            
+            Button {
+                resetPassword()
+            } label: {
+                Text("Reset Password")
+                    .foregroundStyle(.white)
+                    .padding(.vertical)
+                    .frame(width: UIScreen.main.bounds.width - 50)
+            }
+            .background(Color.blue)
+            .cornerRadius(10)
+            .padding(.top, 15)
+            .alert(isPresented: $showSuccess) {
+                Alert(title: Text("Success"), message: Text(successMessage), dismissButton: .default(Text("OK")))
+            }
             
             Button {
                 try! Auth.auth().signOut()
@@ -111,12 +143,35 @@ struct ProfileView: View {
         }
     }
     
+    private func resetPassword() {
+        guard let email = email else {
+            errorMessage = "No email associated with the account"
+            showError = true
+            return
+        }
+        
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                errorMessage = "Failed to send reset email: \(error.localizedDescription)"
+                showError = true
+            } else {
+                successMessage = "The reset password link has been sent to your email"
+                showSuccess = true
+            }
+        }
+    }
+    
     private func setAppToLightMode() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
         
         for window in windowScene.windows {
             window.overrideUserInterfaceStyle = .light  // Force light mode
         }
+    }
+    
+    private func getInitial(from email: String) -> String {
+        let firstInitial = email.prefix(1).uppercased()
+        return firstInitial
     }
 }
 
