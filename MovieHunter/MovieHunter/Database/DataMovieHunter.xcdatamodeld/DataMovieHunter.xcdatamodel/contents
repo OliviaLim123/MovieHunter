@@ -5,6 +5,7 @@
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="ratingText" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="userId" optional="YES" attributeType="String"/>
         <attribute name="yearText" optional="YES" attributeType="String"/>
     </entity>
 </model>

@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import FirebaseAuth
 
 class PersistenceController {
     static let shared = PersistenceController()
@@ -38,6 +39,10 @@ class PersistenceController {
 
     // Save favorite movie
     func addFavoriteMovie(id: Int, title: String, year: String, backdropURL: String, rating: String) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("No user is logged in")
+            return
+        }
         let context = container.viewContext
         let favoriteMovie = FavoriteMovie(context: context)
         favoriteMovie.id = Int64(id)
@@ -45,15 +50,21 @@ class PersistenceController {
         favoriteMovie.yearText = year
         favoriteMovie.backdropURL = backdropURL
         favoriteMovie.ratingText = rating
+        favoriteMovie.userId = userId
         
         saveContext()
     }
 
     // Remove favorite movie
     func removeFavoriteMovie(id: Int) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("No user is logged in")
+            return
+        }
         let context = container.viewContext
         let request: NSFetchRequest<FavoriteMovie> = FavoriteMovie.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %d", id)
+//        request.predicate = NSPredicate(format: "id == %d", id)
+        request.predicate = NSPredicate(format: "id == %d AND userId == %@", id, userId)
         
         if let favoriteMovie = try? context.fetch(request).first {
             context.delete(favoriteMovie)
@@ -63,9 +74,13 @@ class PersistenceController {
 
     // Check if movie is a favorite
     func isFavorite(id: Int) -> Bool {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            return false
+        }
         let context = container.viewContext
         let request: NSFetchRequest<FavoriteMovie> = FavoriteMovie.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %d", id)
+//        request.predicate = NSPredicate(format: "id == %d", id)
+        request.predicate = NSPredicate(format: "id == %d AND userId == %@", id, userId)
         
         return (try? context.fetch(request).first) != nil
     }

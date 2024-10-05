@@ -7,6 +7,7 @@
 
 import CoreData
 import SwiftUI
+import FirebaseAuth
 
 class FavoriteMovieViewModel: ObservableObject {
     @Published var favoriteMovies: [FavoriteMovie] = []
@@ -14,8 +15,15 @@ class FavoriteMovieViewModel: ObservableObject {
     private let persistenceController = PersistenceController.shared
 
     func fetchFavoriteMovies() {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print ("No user is logged in")
+            return
+        }
         let context = persistenceController.container.viewContext
         let request: NSFetchRequest<FavoriteMovie> = FavoriteMovie.fetchRequest()
+        
+        //Filter favorite movies by the logged in user ID
+        request.predicate = NSPredicate(format: "userId == %@", userId)
 
         do {
             favoriteMovies = try context.fetch(request)
@@ -34,4 +42,21 @@ class FavoriteMovieViewModel: ObservableObject {
         persistenceController.saveContext()
         fetchFavoriteMovies() // Refresh the list after deletion
     }
+    
+//    func saveFavoriteMovie(title: String, id: Int, backdropURL: String) {
+//        guard let userId = Auth.auth().currentUser?.uid else {
+//            print("No user is logged in")
+//            return
+//        }
+//        
+//        let context = persistenceController.container.viewContext
+//        let favoriteMovie = FavoriteMovie(context: context)
+//        favoriteMovie.title = title
+//        favoriteMovie.id = Int64(id)
+//        favoriteMovie.backdropURL = backdropURL
+//        favoriteMovie.userId = userId
+//        
+//        persistenceController.saveContext()
+//        fetchFavoriteMovies()
+//    }
 }

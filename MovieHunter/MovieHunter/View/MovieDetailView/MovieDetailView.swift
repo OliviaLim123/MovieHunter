@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import FirebaseAuth
 
 struct MovieDetailView: View {
     let movieId: Int
@@ -17,6 +18,8 @@ struct MovieDetailView: View {
     @State private var isShowingNotificationView = false
     @State private var isReminderSet = false
     let persistenceController = PersistenceController.shared
+    @StateObject private var favoriteMovieVM = FavoriteMovieViewModel()
+        
     
     var body: some View {
         List {
@@ -82,7 +85,9 @@ struct MovieDetailView: View {
         }
     }
     private func checkIfFavorite() {
-        isFavorite = persistenceController.isFavorite(id: movieId)
+        let userId = Auth.auth().currentUser?.uid
+        isFavorite = favoriteMovieVM.favoriteMovies.contains { $0.id == Int64(movieId) && $0.userId == userId }
+//        isFavorite = persistenceController.isFavorite(id: movieId)
     }
 
     private func toggleFavorite(_ movie: Movie) {
