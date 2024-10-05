@@ -16,12 +16,19 @@ struct LaunchScreenView: View {
     @State private var size = 0.8
     //STATE variable to control the opacity of the view
     @State private var opacity = 0.5
+    @State var status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
     
     //LAUNCH SCREEN VIEW
     var body: some View {
         //Navigates to the APP ENTRY VIEW after the LAUNCH SCREEN
         if isActive {
-            WelcomeView()
+            if self.status {
+                TabView()
+            } else {
+                WelcomeView()
+                    .navigationBarBackButtonHidden(true)
+            }
+//            WelcomeView()
         } else {
             VStack {
                 appLogo

@@ -11,6 +11,7 @@ struct WelcomeView: View {
     @State private var currentIndex = 0
     let totalSteps = 3 // You can adjust this based on how many screens you have
     @State private var navigateToLogin = false
+    @State var status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
 
     var body: some View {
         VStack {
@@ -64,7 +65,19 @@ struct WelcomeView: View {
                     .padding(.horizontal)
             }
             .navigationDestination(isPresented: $navigateToLogin) {
+//                if self.status {
+//                    ProfileView()
+//                } else {
+//                    LoginView()
+//                        .navigationBarBackButtonHidden(true)
+//                }
                 LoginView()
+                    .navigationBarBackButtonHidden(true)
+            }
+            .onAppear {
+                NotificationCenter.default.addObserver(forName: NSNotification.Name("status"), object: nil, queue: .main) { (_) in
+                    self.status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
+                }
             }
 
             Spacer()

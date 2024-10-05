@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CB64D78C2CA6B73F002CFB30 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = CB64D78B2CA6B73F002CFB30 /* Lottie */; };
+		CBDFE0C02CB135D6004AFF67 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CBDFE0BF2CB135D6004AFF67 /* FirebaseAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB64D78C2CA6B73F002CFB30 /* Lottie in Frameworks */,
+				CBDFE0C02CB135D6004AFF67 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +73,7 @@
 			name = MovieHunter;
 			packageProductDependencies = (
 				CB64D78B2CA6B73F002CFB30 /* Lottie */,
+				CBDFE0BF2CB135D6004AFF67 /* FirebaseAuth */,
 			);
 			productName = MovieHunter;
 			productReference = CB7A79C12CA1772C00C130A6 /* MovieHunter.app */;
@@ -102,6 +105,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				CB64D78A2CA6B73F002CFB30 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				CBDFE0BE2CB135D6004AFF67 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CB7A79C22CA1772C00C130A6 /* Products */;
@@ -261,6 +265,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MovieHunter/Preview Content\"";
+				DEVELOPMENT_TEAM = 4QK9XA2VUF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
@@ -291,6 +296,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MovieHunter/Preview Content\"";
+				DEVELOPMENT_TEAM = 4QK9XA2VUF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
@@ -345,6 +351,14 @@
 				minimumVersion = 4.5.0;
 			};
 		};
+		CBDFE0BE2CB135D6004AFF67 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -352,6 +366,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CB64D78A2CA6B73F002CFB30 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		CBDFE0BF2CB135D6004AFF67 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CBDFE0BE2CB135D6004AFF67 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
