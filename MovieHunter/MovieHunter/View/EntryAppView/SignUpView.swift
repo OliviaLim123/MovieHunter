@@ -80,7 +80,6 @@ struct SignUpView: View {
                         
                         Button {
                             self.register()
-                            self.navigateToLogin = true
                         } label :{
                             Text("Register")
                                 .foregroundStyle(.white)
@@ -115,6 +114,7 @@ struct SignUpView: View {
                         self.alert.toggle()
                         return
                     }
+                    self.navigateToLogin = true
                     print("success")
                     UserDefaults.standard.set(true, forKey: "status")
                     NotificationCenter.default.post(name: NSNotification.Name("status"), object: nil)
