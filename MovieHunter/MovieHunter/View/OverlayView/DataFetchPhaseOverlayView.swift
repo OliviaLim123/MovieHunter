@@ -7,15 +7,21 @@
 
 import SwiftUI
 
+// MARK: EMPTY DATA PROTOCOL
 protocol EmptyData {
     var isEmpty: Bool { get }
 }
 
+// MARK: DATA FETCH PHASE OVERLAY VIEW
 struct DataFetchPhaseOverlayView<V: EmptyData>: View {
+    
+    // PROPERTIES for phase and retry action
     let phase: DataFetchPhase<V>
     let retryAction: () -> ()
     
+    // BODY VIEW
     var body: some View {
+        // Display the proper view for each case
         switch phase {
         case .empty:
             ProgressView()
@@ -28,9 +34,14 @@ struct DataFetchPhaseOverlayView<V: EmptyData>: View {
         }
     }
 }
+
+// MARK: ARRAY EXTENSION
 extension Array: EmptyData {}
+
+// MARK: OPTIONAL EXTENSION
 extension Optional: EmptyData {
-    var isEmpty: Bool{
+    // COMPUTE PROPERTY for case .none
+    var isEmpty: Bool {
         if case .none = self {
             return true
         }
@@ -38,18 +49,26 @@ extension Optional: EmptyData {
     }
 }
 
+// MARK: SUCCESS OVERLAY PREVIEW
 #Preview {
     DataFetchPhaseOverlayView(phase: .success([])) {
+        // DEBUG
         print("Retry")
     }
 }
+
+// MARK: EMPTY OVERLAY PREVIEW
 #Preview {
     DataFetchPhaseOverlayView<[Movie]>(phase: .empty) {
+        // DEBUG
         print("Retry")
     }
 }
+
+// MARK: FAILURE OVERLAY PREVIEW
 #Preview {
     DataFetchPhaseOverlayView<Movie?>(phase: .failure(MovieError.invalidResponse)) {
+        // DEBUG
         print("Retry")
     }
 }
