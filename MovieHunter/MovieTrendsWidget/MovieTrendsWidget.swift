@@ -51,19 +51,19 @@ struct ImageView: View {
             if let image = imageLoader.image {
                 Image(uiImage: image)
                     .resizable()
-                    .frame(width: 100, height: 150)
+                    .frame(width: 70, height: 100)
                     .aspectRatio(contentMode: .fit)
                     .clipShape(RoundedRectangle(cornerRadius: 10.0))
                 
             } else {
                 Color.gray // Placeholder for when the image is loading
-                    .frame(width: 100, height: 150)
+                    .frame(width: 70, height: 100)
+                    .clipShape(RoundedRectangle(cornerRadius: 10.0))
                     .overlay(
                         Image(systemName: "film")
                             .resizable()
                             .frame(width: 50, height: 50)
                             .foregroundStyle(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 10.0))
                     )
             }
         }
@@ -102,53 +102,35 @@ struct MovieTrendsWidgetEntryView: View {
 
     var body: some View {
         ZStack {
-            ContainerRelativeShape()
-                .inset(by: -17)
-                .fill(backgroundColor)
-            HStack {
-                // Background image filling the entire widget
-                if let topMovie = entry.movies.first {
-                    ImageView(imageLoader: imageLoader, url: topMovie.posterURL)
-                }
-
-                // Overlay text on top of the image
-                VStack(alignment: .leading) {
-                    HStack {
-                        Image("logo")
-                            .resizable()
-                            .frame(width:40, height:40)
-                            .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                        Text("Now Playing")
-                            .font(.title3)
-                            .fontWeight(.heavy)
-                            .foregroundStyle(textColor)
-                    }
-                    .padding(.bottom, 5)
-
-                    if let topMovie = entry.movies.first {
-                        Text(topMovie.title)
-                            .font(.subheadline)
-                            .lineLimit(1)
-                            .padding(.bottom, 5)
-                            .foregroundStyle(textColor)
-                    } else {
-                        Text("No Movies Available")
-                            .font(.subheadline)
-                            .padding(.bottom, 5)
-                            .foregroundStyle(textColor)
-                    }
+            VStack {
+                HStack {
+                    Image("logo")
+                        .resizable()
+                        .frame(width: 20, height: 20)
                     
-                    if let topMovie = entry.movies.first {
-                        Text("🗓️ \(topMovie.yearText)")
-                            .font(.caption)
-                            .foregroundStyle(textColor)
-                        Text(topMovie.ratingText)
-                            .foregroundStyle(.yellow)
-                            .font(.caption)
+                    Text("Now Playing")
+                        .font(.subheadline)
+                        .fontWeight(.heavy)
+                        .foregroundColor(textColor)
+                }
+                
+                
+                HStack(alignment: .center, spacing: 5) {
+                    ForEach(entry.movies.prefix(4)) { movie in
+                        VStack {
+                            // Create a new ImageLoader for each movie
+                            ImageView(imageLoader: ImageLoader(), url: movie.posterURL)
+                            Text(movie.title)
+                                .font(.system(size: 8))
+                                .lineLimit(1)
+                                .foregroundColor(textColor)
+                        }
+                        .frame(width: 80)
                     }
                 }
-                .padding(.horizontal, 10) // Padding for the text overlay
+                .padding(.horizontal)
             }
+            .padding()
         }
     }
 }
@@ -247,36 +229,14 @@ struct MovieResponse: Decodable {
 struct Movie: Decodable, Identifiable {
     let id: Int
     let title: String
-    let voteAverage: Double
     let backdropPath: String?
     let posterPath: String?
-    let releaseDate: String?
-    
-    static private let yearFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy"
-        return formatter
-    }()
     
     var backdropURL: URL {
         return URL(string: "https://image.tmdb.org/t/p/w500\(backdropPath ?? "")")!
     }
     var posterURL: URL {
         return URL(string: "https://image.tmdb.org/t/p/w500\(posterPath ?? "")")!
-    }
-    
-    var ratingText: String {
-        let rating = Int(voteAverage)
-        let ratingText = (0..<rating).reduce("") { (acc, _) -> String in
-            return acc + "★"
-        }
-        return ratingText
-    }
-    var yearText: String {
-        guard let releaseDate = self.releaseDate, let date = Decoder.dateFormatter.date(from: releaseDate) else {
-            return "Unknown release date"
-        }
-        return Movie.yearFormatter.string(from: date)
     }
 }
    
@@ -331,7 +291,6 @@ class ImageLoader: ObservableObject {
         }
     }
 }
-import Foundation
 
 protocol MovieService {
     func fetchMovies(from endpoint: MovieListEndPoint) async throws -> [Movie]
