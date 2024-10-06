@@ -7,7 +7,10 @@
 
 import Foundation
 
+// MARK: DECODER CLASS
 class Decoder {
+    
+    // STATIC PROPERTY to decode JSON
     static let jsonDecoder: JSONDecoder = {
         let jsonDecoder = JSONDecoder()
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -15,6 +18,7 @@ class Decoder {
         return jsonDecoder
     }()
     
+    // STATIC PROPERTY to decode date (Format: year-month-day)
     static let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-mm-dd"
