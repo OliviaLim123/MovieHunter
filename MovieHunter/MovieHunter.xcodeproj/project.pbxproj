@@ -8,17 +8,67 @@
 
 /* Begin PBXBuildFile section */
 		CB64D78C2CA6B73F002CFB30 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = CB64D78B2CA6B73F002CFB30 /* Lottie */; };
+		CB9638CE2CB229D200597578 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9638CD2CB229D200597578 /* WidgetKit.framework */; };
+		CB9638D02CB229D200597578 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9638CF2CB229D200597578 /* SwiftUI.framework */; };
+		CB9638DD2CB229D300597578 /* MovieTrendsWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = CB9638CB2CB229D200597578 /* MovieTrendsWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CB9638E32CB2348C00597578 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CB9638E22CB2348C00597578 /* FirebaseAuth */; };
+		CB9638E52CB2349400597578 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = CB9638E42CB2349400597578 /* FirebaseCore */; };
 		CBDFE0C02CB135D6004AFF67 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CBDFE0BF2CB135D6004AFF67 /* FirebaseAuth */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CB9638DB2CB229D300597578 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB7A79B92CA1772C00C130A6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB9638CA2CB229D200597578;
+			remoteInfo = MovieTrendsWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CB9638912CB21B5D00597578 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CB9638DD2CB229D300597578 /* MovieTrendsWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		CB7A79C12CA1772C00C130A6 /* MovieHunter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieHunter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB9638CB2CB229D200597578 /* MovieTrendsWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MovieTrendsWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB9638CD2CB229D200597578 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		CB9638CF2CB229D200597578 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CB9638DE2CB229D300597578 /* Exceptions for "MovieTrendsWidget" folder in "MovieTrendsWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = CB9638CA2CB229D200597578 /* MovieTrendsWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CB7A79C32CA1772C00C130A6 /* MovieHunter */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = MovieHunter;
+			sourceTree = "<group>";
+		};
+		CB9638D12CB229D200597578 /* MovieTrendsWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CB9638DE2CB229D300597578 /* Exceptions for "MovieTrendsWidget" folder in "MovieTrendsWidgetExtension" target */,
+			);
+			path = MovieTrendsWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -33,6 +83,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB9638C82CB229D200597578 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB9638D02CB229D200597578 /* SwiftUI.framework in Frameworks */,
+				CB9638E32CB2348C00597578 /* FirebaseAuth in Frameworks */,
+				CB9638E52CB2349400597578 /* FirebaseCore in Frameworks */,
+				CB9638CE2CB229D200597578 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -40,6 +101,8 @@
 			isa = PBXGroup;
 			children = (
 				CB7A79C32CA1772C00C130A6 /* MovieHunter */,
+				CB9638D12CB229D200597578 /* MovieTrendsWidget */,
+				CB9638CC2CB229D200597578 /* Frameworks */,
 				CB7A79C22CA1772C00C130A6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,8 +111,18 @@
 			isa = PBXGroup;
 			children = (
 				CB7A79C12CA1772C00C130A6 /* MovieHunter.app */,
+				CB9638CB2CB229D200597578 /* MovieTrendsWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CB9638CC2CB229D200597578 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CB9638CD2CB229D200597578 /* WidgetKit.framework */,
+				CB9638CF2CB229D200597578 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -62,10 +135,12 @@
 				CB7A79BD2CA1772C00C130A6 /* Sources */,
 				CB7A79BE2CA1772C00C130A6 /* Frameworks */,
 				CB7A79BF2CA1772C00C130A6 /* Resources */,
+				CB9638912CB21B5D00597578 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CB9638DC2CB229D300597578 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				CB7A79C32CA1772C00C130A6 /* MovieHunter */,
@@ -79,6 +154,30 @@
 			productReference = CB7A79C12CA1772C00C130A6 /* MovieHunter.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CB9638CA2CB229D200597578 /* MovieTrendsWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB9638DF2CB229D300597578 /* Build configuration list for PBXNativeTarget "MovieTrendsWidgetExtension" */;
+			buildPhases = (
+				CB9638C72CB229D200597578 /* Sources */,
+				CB9638C82CB229D200597578 /* Frameworks */,
+				CB9638C92CB229D200597578 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CB9638D12CB229D200597578 /* MovieTrendsWidget */,
+			);
+			name = MovieTrendsWidgetExtension;
+			packageProductDependencies = (
+				CB9638E22CB2348C00597578 /* FirebaseAuth */,
+				CB9638E42CB2349400597578 /* FirebaseCore */,
+			);
+			productName = MovieTrendsWidgetExtension;
+			productReference = CB9638CB2CB229D200597578 /* MovieTrendsWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -90,6 +189,9 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					CB7A79C02CA1772C00C130A6 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					CB9638CA2CB229D200597578 = {
 						CreatedOnToolsVersion = 16.0;
 					};
 				};
@@ -113,12 +215,20 @@
 			projectRoot = "";
 			targets = (
 				CB7A79C02CA1772C00C130A6 /* MovieHunter */,
+				CB9638CA2CB229D200597578 /* MovieTrendsWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		CB7A79BF2CA1772C00C130A6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB9638C92CB229D200597578 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +245,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB9638C72CB229D200597578 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CB9638DC2CB229D300597578 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB9638CA2CB229D200597578 /* MovieTrendsWidgetExtension */;
+			targetProxy = CB9638DB2CB229D300597578 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		CB7A79CD2CA1772D00C130A6 /* Debug */ = {
@@ -319,6 +444,60 @@
 			};
 			name = Release;
 		};
+		CB9638E02CB229D300597578 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4QK9XA2VUF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MovieTrendsWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MovieTrendsWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.uts.MovieHunter.MovieTrendsWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CB9638E12CB229D300597578 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4QK9XA2VUF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MovieTrendsWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MovieTrendsWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = au.edu.uts.MovieHunter.MovieTrendsWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -336,6 +515,15 @@
 			buildConfigurations = (
 				CB7A79D02CA1772D00C130A6 /* Debug */,
 				CB7A79D12CA1772D00C130A6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB9638DF2CB229D300597578 /* Build configuration list for PBXNativeTarget "MovieTrendsWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB9638E02CB229D300597578 /* Debug */,
+				CB9638E12CB229D300597578 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -366,6 +554,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CB64D78A2CA6B73F002CFB30 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		CB9638E22CB2348C00597578 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CBDFE0BE2CB135D6004AFF67 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		CB9638E42CB2349400597578 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CBDFE0BE2CB135D6004AFF67 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
 		};
 		CBDFE0BF2CB135D6004AFF67 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
