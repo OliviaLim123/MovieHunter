@@ -11,7 +11,7 @@ import Foundation
 struct Reminders: Identifiable {
     
     // PROPERTIES of Reminders
-    let id = UUID() 
+    let id = UUID()
     let movieId: Int
     let movieTitle: String
     let date: Date
