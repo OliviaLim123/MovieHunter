@@ -7,11 +7,15 @@
 
 import Foundation
 
+// MARK: DATA FETCH PHASE
 enum DataFetchPhase<V> {
+    
+    // ENUM CASES of DataFetchPhse
     case empty
     case success(V)
     case failure(Error)
     
+    // COMPUTE PROPERTY for success value
     var value: V? {
         if case .success(let value) = self {
             return value
