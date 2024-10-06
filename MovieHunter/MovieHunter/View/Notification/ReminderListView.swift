@@ -8,27 +8,41 @@
 import SwiftUI
 import FirebaseAuth
 
+// MARK: REMINDER LIST VIEW
 struct ReminderListView: View {
-    @Binding var reminders: [Reminders]   // Accept reminders as a parameter
+    
+    // BINDING PROPERTY of Reminders
+    @Binding var reminders: [Reminders]
+    
+    // PROPERTY of ReminderListView
     var onDismiss: () -> Void
     let notify = NotificationHandler()
+    
+    // COMPUTE PRIVATE PROPERTY to sort the reminders from the most recent
     private var sortedReminders: [Reminders] {
         reminders.sorted { $0.date > $1.date }
     }
     
+    // BODY VIEW
     var body: some View {
         NavigationView {
             Group {
+                // ERROR HANDLING if the reminder is empty
                 if reminders.isEmpty {
                     VStack {
                         EmptyPlaceholderView(text: "Sorry, no reminders!", image: Image(systemName: "calendar.badge.exclamationmark"))
                     }
                 } else {
+                    // Display the sorted reminder list
                     List(sortedReminders) { reminder in
+                        // Once it is clicked, it will navigate to the MovieDetailView
                         NavigationLink(destination: MovieDetailView(movieId: reminder.movieId, movieTitle: reminder.movieTitle)) {
                             VStack(alignment: .leading) {
+                                // Display the movie title
                                 Text(reminder.movieTitle)
                                     .font(.headline)
+                                
+                                // Display the reminder date
                                 Text("\(formattedDate(reminder.date))")
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
@@ -39,66 +53,54 @@ struct ReminderListView: View {
             }
             .navigationTitle("Your Reminders")
             .navigationBarItems(trailing: clearButton)
+            // Once this view appears, it will load the user reminders
             .onAppear(perform: loadUserReminders)
             .onDisappear {
-                onDismiss()  // Notify when the view is dismissed
+                // Notify when the view is dismissed
+                onDismiss()
             }
         }
     }
+    
+    // PRIVATE FUNCTION to load current logged in user reminders
     private func loadUserReminders() {
-        reminders = notify.getUserReminders()  // Load reminders for the current user
+        reminders = notify.getUserReminders()
     }
     
+    // CLEAR BUTTON VIEW
     private var clearButton: some View {
         Button(action: clearReminders) {
             Text("Clear All")
-                .foregroundColor(.red)  // Color for the clear button
+                .foregroundColor(.red)
         }
     }
     
+    // PRIVATE FUNCTION to clear the reminders
     private func clearReminders() {
+        // ERROR HANDLING to check the current logged in user before clear the reminders
         guard let userId = Auth.auth().currentUser?.uid else {
+            // DEBUG
             print("No user is logged in")
             return
         }
+        
+        // Fetch the saved notification from UserDefaults
         var savedNotifications = UserDefaults.standard.array(forKey: "savedNotifications") as? [[String: Any]] ?? []
         savedNotifications.removeAll { notification in
             return notification["userId"] as? String == userId
         }
-    
-        UserDefaults.standard.removeObject(forKey: "savedNotifications")  // Clear saved notifications in UserDefaults
-        // Clear reminders and update UserDefaults
-        reminders.removeAll()  // This will work because reminders is a Binding
+        
+        // Clear and update the saved notification in UserDefaults
+        UserDefaults.standard.removeObject(forKey: "savedNotifications")
+        // Clear all reminders
+        reminders.removeAll()
     }
     
+    // PRIVATE FUNCTION to format the date into String type
     private func formattedDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
         return formatter.string(from: date)
     }
-//    func getUserReminders() -> [Reminders] {
-//        guard let userId = Auth.auth().currentUser?.uid else {
-//            print("No user is logged in")
-//            return []
-//        }
-//        
-//        let savedNotifications = UserDefaults.standard.array(forKey: "savedNotifications") as? [[String: Any]] ?? []
-//        
-//        // Filter reminders by the current user's userId
-//        let userReminders = savedNotifications.filter { notification in
-//            return notification["userId"] as? String == userId
-//        }
-//        
-//        // Convert the filtered dictionary data back into Reminders objects
-//        let reminders = userReminders.compactMap { data -> Reminders? in
-//            guard let movieId = data["movieId"] as? Int,
-//                  let movieTitle = data["movieTitle"] as? String,
-//                  let date = data["date"] as? Date else { return nil }
-//            
-//            return Reminders(movieId: movieId, movieTitle: movieTitle, date: date)
-//        }
-//        
-//        return reminders
-//    }
 }
