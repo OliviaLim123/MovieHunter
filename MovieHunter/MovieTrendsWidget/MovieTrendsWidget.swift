@@ -70,6 +70,9 @@ struct MovieTrendsWidgetEntryView: View {
 
     var body: some View {
         ZStack {
+            ContainerRelativeShape()
+                .inset(by: -17)
+                .fill(backgroundColor)
             VStack {
                 HStack {
                     Image("logo")
@@ -84,7 +87,7 @@ struct MovieTrendsWidgetEntryView: View {
                 
                 HStack(alignment: .center, spacing: 5) {
                     ForEach(entry.movies.prefix(4)) { movie in
-                        let imageLoader = ImageLoader() 
+                        let imageLoader = ImageLoader()
                         VStack {
                             ImageView(imageLoader: imageLoader, url: movie.posterURL)
                             Text(movie.title)
