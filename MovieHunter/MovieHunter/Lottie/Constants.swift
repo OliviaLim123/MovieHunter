@@ -7,8 +7,9 @@
 
 import Foundation
 
-// Static consants for Lottie Animation which used across the application
+// MARK: CONSTANTS ENUM
 enum Constants {
+   // STATIC PROPERTIES for Lottie Animation which used across the application
     static var voiceAnimation = "Animation - 1727698245354"
     static var welcomeAnimation = "Animation - 1727698981446"
     static var discoverMovieAnimation = "Animation - 1728105626095"
