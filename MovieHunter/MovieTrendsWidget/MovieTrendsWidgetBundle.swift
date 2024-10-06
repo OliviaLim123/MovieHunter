@@ -12,6 +12,5 @@ import SwiftUI
 struct MovieTrendsWidgetBundle: WidgetBundle {
     var body: some Widget {
         MovieTrendsWidget()
-        MovieTrendsWidgetControl()
     }
 }
