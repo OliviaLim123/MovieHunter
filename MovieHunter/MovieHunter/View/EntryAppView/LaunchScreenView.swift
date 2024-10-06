@@ -7,35 +7,33 @@
 
 import SwiftUI
 
-//LAUNCH SCREEN VIEW Struct
+// MARK: LAUNCH SCREEN VIEW
 struct LaunchScreenView: View {
     
-    //STATE variable to track whether the view is active
+    // STATE PRIVATE PROPERTIES of LaunchScreenView
     @State private var isActive = false
-    //STATE variable to manage the size of the view
     @State private var size = 0.8
-    //STATE variable to control the opacity of the view
     @State private var opacity = 0.5
     @State var status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
     
-    //LAUNCH SCREEN VIEW
+    // BODY VIEW
     var body: some View {
-        //Navigates to the APP ENTRY VIEW after the LAUNCH SCREEN
+        // Navigates to the TabView after LaunchScreenView if isActive
         if isActive {
             if self.status {
                 TabView()
             } else {
+                // Otherwise navigates to WelcomeView
                 WelcomeView()
                     .navigationBarBackButtonHidden(true)
             }
-//            WelcomeView()
         } else {
             VStack {
                 appLogo
                 .scaleEffect(size)
                 .opacity(opacity)
                 .onAppear {
-                    //Providing APP LOGO ANIMATION
+                    // Providing app logo ease in animation
                     withAnimation(.easeIn(duration: 1.2)) {
                         self.size = 0.9
                         self.opacity = 1.0
@@ -43,7 +41,7 @@ struct LaunchScreenView: View {
                 }
             }
             .onAppear {
-                //ANIMATION to the next view
+                // Implement animation to the next view
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                     withAnimation {
                         self.isActive = true
@@ -53,8 +51,9 @@ struct LaunchScreenView: View {
         }
     }
     
-    //APP LOGO Appearance
+    // APP LOGO VIEW
     var appLogo: some View {
+        // Display the logo and application name
         VStack {
             Image("logo")
                 .resizable()
@@ -68,6 +67,7 @@ struct LaunchScreenView: View {
     }
 }
 
+// MARK: LAUNCH SCREEN PREVIEW
 #Preview {
     LaunchScreenView()
 }

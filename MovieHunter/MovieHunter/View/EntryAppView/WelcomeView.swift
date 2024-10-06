@@ -7,17 +7,22 @@
 
 import SwiftUI
 
+// MARK: WELCOME VIEW
 struct WelcomeView: View {
+    
+    // STATE PRIVATE PROPERTIES of WelcomeView
     @State private var currentIndex = 0
-    let totalSteps = 3 // You can adjust this based on how many screens you have
     @State private var navigateToLogin = false
     @State var status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
+    // PROPERTY for totalSteps
+    let totalSteps = 3
 
+    // BODY VIEW
     var body: some View {
         VStack {
             Spacer()
             
-            // Image Section
+            // Display image for each step
             if currentIndex == 0 {
                 LottieView(name: Constants.discoverMovieAnimation, loopMode: .loop, animationSpeed: 1.0, retryAction: {})
                     .frame(height: 400)
@@ -31,7 +36,7 @@ struct WelcomeView: View {
             
             Spacer()
 
-            // Text Section
+            // Display text for each step
             VStack(spacing: 10) {
                 Text(currentIndex == 0 ? "Discover Movies" : currentIndex == 1 ? "Add to Reminder" : "Personal Movie Collections")
                     .font(.title)
@@ -47,14 +52,14 @@ struct WelcomeView: View {
             
             Spacer()
 
-            // "Next" Button
-            Button(action: {
+            // Button to next step
+            Button {
                 if currentIndex < totalSteps - 1 {
                     currentIndex += 1
                 } else {
                     navigateToLogin = true
                 }
-            }) {
+            } label: {
                 Text(currentIndex == totalSteps - 1 ? "Start Hunting!" : "Next")
                     .font(.headline)
                     .foregroundColor(.white)
@@ -64,17 +69,13 @@ struct WelcomeView: View {
                     .cornerRadius(8)
                     .padding(.horizontal)
             }
+            // This button will navigate to the LoginView after reaching the last step
             .navigationDestination(isPresented: $navigateToLogin) {
-//                if self.status {
-//                    ProfileView()
-//                } else {
-//                    LoginView()
-//                        .navigationBarBackButtonHidden(true)
-//                }
                 LoginView()
                     .navigationBarBackButtonHidden(true)
             }
             .onAppear {
+                // When the view appears, it will observe the user status
                 NotificationCenter.default.addObserver(forName: NSNotification.Name("status"), object: nil, queue: .main) { (_) in
                     self.status = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
                 }
@@ -82,7 +83,7 @@ struct WelcomeView: View {
 
             Spacer()
 
-            // Page Indicator
+            // Display the page indicator
             HStack(spacing: 8) {
                 ForEach(0..<Int(totalSteps), id: \.self) { index in
                     Circle()
@@ -95,6 +96,7 @@ struct WelcomeView: View {
     }
 }
 
+// MARK: WELCOME PREVIEW
 #Preview {
     WelcomeView()
 }

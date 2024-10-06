@@ -7,16 +7,22 @@
 
 import SwiftUI
 
+// MARK: TAB VIEW
 struct TabView: View {
+    
+    // STATE PRIVATE PROPERTY of TabView
     @State private var selectedTab: Tab = .movieclapper
     
+    // INIT FUNCTION
     init() {
         UITabBar.appearance().isHidden = true
     }
     
+    // BODY VIEW
     var body: some View {
         ZStack {
             VStack {
+                // Assign each case with the proper view
                 switch selectedTab {
                 case .movieclapper:
                     MovieHomeView()
@@ -30,6 +36,8 @@ struct TabView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(.bottom, 100)
+            
+            // Display the Custom Tab Bar
             VStack {
                 Spacer()
                 CustomTabBar(selectedTab: $selectedTab)
@@ -38,6 +46,7 @@ struct TabView: View {
     }
 }
 
+// MARK: TAB PREVIEW
 #Preview {
     TabView()
 }
