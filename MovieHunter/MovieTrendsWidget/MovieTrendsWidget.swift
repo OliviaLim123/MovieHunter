@@ -30,7 +30,7 @@ struct NowPlayingProvider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<MovieEntry>) -> Void) {
         Task {
             do {
-                let movies = try await MovieAPIManager.shared.fetchMovies(from: .nowPlaying) // Fetch now playing movies
+                let movies = try await MovieAPIManager.shared.fetchMovies(from: .nowPlaying)
                 let entryDate = Date()
                 let entry = MovieEntry(date: entryDate, movieTitle: movies.first?.title ?? "No Movies", movies: movies)
                 let timeline = Timeline(entries: [entry], policy: .after(entryDate.addingTimeInterval(60 * 60)))
@@ -48,27 +48,25 @@ struct NowPlayingProvider: TimelineProvider {
 // MARK: MOVIE TRENDS WIDGET VIEW
 struct MovieTrendsWidgetEntryView: View {
     var entry: NowPlayingProvider.Entry
-    @StateObject var imageLoader = ImageLoader()
+    
     var currentHour: Int {
-            Calendar.current.component(.hour, from: Date())
-        }
-        
-        // Determine if the current mode should be light or dark based on time
-        var isNightMode: Bool {
-            currentHour < 6 || currentHour >= 18
-        }
-        
-        // Define background color based on time of day
-        var backgroundColor: Color {
-            isNightMode ? .black : .white
-        }
-        
-        // Define text color based on time of day
-        var textColor: Color {
-            isNightMode ? .white : .black
-        }
-
-        
+        Calendar.current.component(.hour, from: Date())
+    }
+    
+    // Determine if the current mode should be light or dark based on time
+    var isNightMode: Bool {
+        currentHour < 6 || currentHour >= 18
+    }
+    
+    // Define background color based on time of day
+    var backgroundColor: Color {
+        isNightMode ? .black : .white
+    }
+    
+    // Define text color based on time of day
+    var textColor: Color {
+        isNightMode ? .white : .black
+    }
 
     var body: some View {
         ZStack {
@@ -84,12 +82,11 @@ struct MovieTrendsWidgetEntryView: View {
                         .foregroundColor(textColor)
                 }
                 
-                
                 HStack(alignment: .center, spacing: 5) {
                     ForEach(entry.movies.prefix(4)) { movie in
+                        let imageLoader = ImageLoader() 
                         VStack {
-                            // Create a new ImageLoader for each movie
-                            ImageView(imageLoader: ImageLoader(), url: movie.posterURL)
+                            ImageView(imageLoader: imageLoader, url: movie.posterURL)
                             Text(movie.title)
                                 .font(.system(size: 8))
                                 .lineLimit(1)
@@ -136,7 +133,7 @@ struct ImageView: View {
                 Image(uiImage: image)
                     .resizable()
                     .frame(width: 70, height: 100)
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fill)
                     .clipShape(RoundedRectangle(cornerRadius: 10.0))
                 
             } else {
@@ -160,39 +157,52 @@ struct ImageView: View {
 }
 
 // MARK: IMAGE LOADER
+private let _imageCache = NSCache<AnyObject, AnyObject>()
 class ImageLoader: ObservableObject {
     
     @Published var image: UIImage?
     @Published var isLoading = false
     
-    var imageCache = NSCache<AnyObject, AnyObject>()
+    var imageCache = _imageCache
     
     func loadImage(with url: URL) {
         print("Loading image from URL: \(url)")
+        isLoading = true // Start loading
+
         let urlString = url.absoluteString
         if let imageFromCache = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
             self.image = imageFromCache
             print("Image loaded from cache.")
+            isLoading = false // Done loading
             return
         }
+
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let self = self else { return }
             do {
                 let data = try Data(contentsOf: url)
                 guard let image = UIImage(data: data) else {
                     print("Failed to convert data to image.")
+                    DispatchQueue.main.async {
+                        self.isLoading = false // Stop loading even if failed
+                    }
                     return
                 }
                 self.imageCache.setObject(image, forKey: urlString as AnyObject)
                 DispatchQueue.main.async { [weak self] in
                     self?.image = image
+                    self?.isLoading = false // Stop loading
                     print("Image successfully loaded from URL.")
                 }
             } catch {
-                print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.isLoading = false // Stop loading on error
+                    print(error.localizedDescription)
+                }
             }
         }
     }
+
 }
 
 // MARK: MOVIE API MANAGER
