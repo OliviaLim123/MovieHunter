@@ -9,6 +9,7 @@ import Foundation
 import UserNotifications
 import FirebaseAuth
 
+// 
 class NotificationHandler: NSObject,ObservableObject, UNUserNotificationCenterDelegate {
     @Published var notificationReceived = false
     @Published var notifications: [String] = []
