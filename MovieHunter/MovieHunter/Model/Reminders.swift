@@ -7,8 +7,11 @@
 
 import Foundation
 
+// MARK: REMINDERS MODEL
 struct Reminders: Identifiable {
-    let id = UUID() // Unique identifier for each reminder
+    
+    // PROPERTIES of Reminders
+    let id = UUID() 
     let movieId: Int
     let movieTitle: String
     let date: Date
