@@ -8,8 +8,10 @@
 import WidgetKit
 import SwiftUI
 
+// MARK: MOVIE TRENDS WIDGET BUNDLE
 @main
 struct MovieTrendsWidgetBundle: WidgetBundle {
+    // BODY VIEW
     var body: some Widget {
         MovieTrendsWidget()
     }
