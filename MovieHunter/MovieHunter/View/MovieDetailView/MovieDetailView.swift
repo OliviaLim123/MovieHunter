@@ -106,8 +106,7 @@ struct MovieDetailView: View {
     
     // PRIVATE FUNCTION to check the favourite status based on the current logged in user
     private func checkIfFavorite() {
-        let userId = Auth.auth().currentUser?.uid
-        isFavorite = favoriteMovieVM.favoriteMovies.contains { $0.id == Int64(movieId) && $0.userId == userId }
+        isFavorite = persistenceController.isFavorite(id: movieId)
     }
 
     // PRIVATE FUNCTION to toggle the favourite button

@@ -57,10 +57,6 @@ struct FavoriteMovieView: View {
             .onAppear {
                 favoriteMovieVM.fetchFavoriteMovies()
             }
-            // Enable the edit button
-            .toolbar {
-                EditButton()
-            }
         }
     }
 }
