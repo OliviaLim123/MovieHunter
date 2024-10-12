@@ -29,5 +29,6 @@ https://github.com/user-attachments/assets/37ce7c70-73c6-4867-8da3-ed34485209d6
 
 The Movie Hunter application has a MovieError Enum, which defines various types of errors that may occur, each associated with a specific error message. This enum aims to streamline error handling throughout the application by providing descriptive error cases that can be used in guard-let statements. When there is an error, the appropriate case from MovieError is thrown instead of using generic error handling (see Figure below as one example).
 
-<img width="327" alt="image" src="https://github.com/user-attachments/assets/02b4db51-1948-41f6-bb63-f8a0aa3d37b1">
+<img width="647" alt="Screenshot 2024-10-13 at 8 34 01 am" src="https://github.com/user-attachments/assets/3649d824-494e-4ae9-9973-d8b5afe9a98e">
+
 
