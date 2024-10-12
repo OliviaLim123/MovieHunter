@@ -5,6 +5,7 @@ Are you ready to dive into the world of movies? Find the best movie to watch wit
 Github link: 
 
 # PREVIEW
+Screenshot has been provided inside the Documentation file.
 
 https://github.com/user-attachments/assets/37ce7c70-73c6-4867-8da3-ed34485209d6
 
