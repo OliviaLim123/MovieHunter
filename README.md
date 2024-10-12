@@ -6,7 +6,7 @@ Github link:
 
 # PREVIEW
 
-https://github.com/user-attachments/assets/93ae04d1-cfcd-40e3-9152-6c33d14750bf
+https://github.com/user-attachments/assets/37ce7c70-73c6-4867-8da3-ed34485209d6
 
 # MOVIE HUNTER FEATURES
 
