@@ -4,6 +4,10 @@ Are you ready to dive into the world of movies? Find the best movie to watch wit
 
 Github link: 
 
+# PREVIEW
+
+https://github.com/user-attachments/assets/93ae04d1-cfcd-40e3-9152-6c33d14750bf
+
 # MOVIE HUNTER FEATURES
 
 1.	Discover Movies in Real-Time: Stay up to date with the latest now-playing, top-rated, popular, and upcoming categories.
