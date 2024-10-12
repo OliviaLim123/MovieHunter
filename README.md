@@ -2,7 +2,7 @@
 
 Are you ready to dive into the world of movies? Find the best movie to watch with Movie Hunter!
 
-Github link: 
+Github link: https://github.com/OliviaLim123/MovieHunter
 
 # PREVIEW
 Screenshot has been provided inside the Documentation file.
