@@ -96,7 +96,7 @@ struct MovieHomeView: View {
         }
         .onReceive(notificationHandler.$notificationReceived) { received in
             // Update the notification state when received
-            hasNotification = received
+            hasNotification = received && !reminders.isEmpty
         }
     }
         
@@ -122,7 +122,9 @@ struct MovieHomeView: View {
             }
             // If the reminder is not empty, it means has the notification
             if !reminders.isEmpty {
-                hasNotification = true
+                hasNotification = true 
+            } else {
+                hasNotification = false
             }
         }
     }
